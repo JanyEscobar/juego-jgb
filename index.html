@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JGB Tarrito Rojo</title>
+  </head>
+  <style>
+    input, select {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 15px 20px;
+      gap: 10px;
+      position: absolute;
+      width: 300px;
+      height: 52px;
+      left: 20px;
+      top: 20px;
+      background: #FFFFFF;
+      box-shadow: 0px 2px 4px #FFA800, 0px 5px 10px #FFF384, inset 0px 4px 8px #FFA800;
+      border-radius: 15px;
+    }
+    select {
+      font-size: 19px;
+      font-family: 'Ariel';
+    }
+  </style>
+  <body>
+    <div id="container" style="width: 540px; padding: 0; margin: 0 auto;"></div>
+    <script src="./node_modules/phaser/dist/phaser.min.js"></script>
+    <script src="./src/main.js" type="module"></script>
+  </body>
+</html>
