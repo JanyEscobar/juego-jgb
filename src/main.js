@@ -1,11 +1,9 @@
 import Home from './scenes/Home.js';
 import Homescene from './scenes/Homescene.js';
-import Firstscene from './scenes/Firstscene.js'
 import Registro from './scenes/Registro.js';
 import Resultado from './scenes/Resultado.js';
 import Demo from './scenes/Demo.js';
-import Incorrecto from './scenes/Incorrecto.js';
-// import { Niveles } from './scenes/Niveles.js';
+import Game from './scenes/game.js';
 
 const config = {
   title: 'Juego-JGB',
@@ -43,7 +41,7 @@ const config = {
       createContainer: true
   },
 
-  scene: [Home, Registro, Demo, Homescene, Firstscene, Resultado, Incorrecto]
+  scene: [Home, Registro, Demo, Homescene, Resultado, Game]
 };
 
 const game = new Phaser.Game(config);
