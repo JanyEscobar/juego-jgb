@@ -21,8 +21,8 @@ class Demo extends Phaser.Scene {
         this.load.image('balloonDemo', 'assets/jgb/balloon.png');
         this.load.image('personajeDemo', this.personajeDemo);
         this.load.spritesheet('pillDemo', 'assets/jgb/objetos.png', { frameWidth: 72, frameHeight: 148 });
-        this.load.spritesheet('dependientespriteDemo', this.path_dependiente, { frameWidth: 140, frameHeight: 130 }); // prueba
-        // this.load.spritesheet('dependientespriteDemo', this.path_dependiente, { frameWidth: 96.8, frameHeight: 125 });
+        this.load.spritesheet('dependientespriteDemo', this.path_dependiente, { frameWidth: 140, frameHeight: 130 });
+        this.load.spritesheet('cuenta', 'assets/jgb/cuenta.png', { frameWidth: 175, frameHeight: 132 });
         this.load.spritesheet('btnDemo', 'assets/jgb/boton_demo.png', { frameWidth: 364, frameHeight: 94 });
         this.load.spritesheet('btnGo', 'assets/jgb/boton_go.png', { frameWidth: 350, frameHeight: 120 });
     }
@@ -30,18 +30,35 @@ class Demo extends Phaser.Scene {
     create() {
         this.pillCollitionDemo = false;
         this.sideCollitionDemo = 1;
-        this.gorightDemo = false;
-        this.goleftDemo = false;
         this.answerDemo;
+        this.mostrarCuenta = true;
+        this.num = 0;
+        this.moverIzquierda = false;
+        this.moverDerecha = false;
+        this.comenzarTarritos = false;
 
         this.background = this.add.image(270, 380, 'background');
-        this.mundo = this.add.text(15, 15, "Mundo Tradicional", { fontFamily: 'Rammetto One', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
+        this.mundo = this.add.text(15, 15, "Mundo Tradicional", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
+        this.cuenta = this.physics.add.sprite(270, 350, 'cuenta').setDepth(1);
+        this.cuenta.body.allowGravity = false;
+        this.anims.create({
+            key: 'tiempo',
+            frames: this.anims.generateFrameNumbers('cuenta', { start: 0, end: 3 }),
+            duration: 4000
+        });
+
+        this.cuenta.visible = false;
         this.mensaje = this.add.image(270, 400, 'mensaje');
         this.personajeDemo = this.add.image(475, 485, 'personajeDemo');
         
-        this.playerDemo = this.physics.add.sprite(270, 563, 'dependientespriteDemo');
+        this.playerDemo = this.physics.add.sprite(250, 563, 'dependientespriteDemo');
         this.playerDemo.setCollideWorldBounds(true);
         this.playerDemo.visible = false;
+
+        this.cuenta.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function() {
+            this.playerDemo.visible = true;
+            this.cuenta.visible = false;
+        }, this);
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.balloonDemo = this.add.image(270, 85, 'balloonDemo').setDepth(1).setAlpha(0.95);
@@ -82,13 +99,15 @@ class Demo extends Phaser.Scene {
         }).on('pointerout', () => {
             this.btnDemo.setFrame(0);
         }).on('pointerdown', () => {
-            this.playerDemo.visible = true;
             this.groundDemo.visible = true;
             this.balloonDemo.visible = true;
             this.mensaje.visible = false;
             this.btnDemo.visible = false;
             this.personajeDemo.visible = false;
             this.mensajeDemo = this.add.text(50, 670, "Desliza el personaje a los lados y atrapa el tarrito\n Si estas en un ordenador, utiliza el teclado", { fontFamily: 'Rammetto One', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF', align: "center" }).setDepth(1);
+            this.textoAccion = this.add.text(180, 730, 'Vamos a la derecha', { fontFamily: 'Rammetto One', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF', align: "center" }).setDepth(1);
+            this.cuenta.visible = true;
+            this.cuenta.anims.play('tiempo');
         });
 
         this.btnGo.on('pointerover', () => {
@@ -97,7 +116,8 @@ class Demo extends Phaser.Scene {
             this.btnGo.setFrame(0);
         }).on('pointerdown', () => {
             this.groundDemo.destroy();
-            this.scene.start("Firstscene", {
+            // this.scene.start("Firstscene", {
+            this.scene.start("Game", {
                 "path_dependiente": this.path_dependiente,
                 "celebracion": this.celebracion,
                 "perdiste": this.perdiste,
@@ -118,29 +138,51 @@ class Demo extends Phaser.Scene {
             }
             this.groundDemo.destroy();
             this.mensajeDemo.destroy();
+            this.textoAccion.destroy();
             this.groundDemo = this.physics.add.image(270, 400, 'groundDemo').setDepth(1);
-            this.mensajeDemo = this.add.text(50, 360, "Muy bien! estas listo para empezar!", { fontFamily: 'Rammetto One', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF', align: "center" }).setDepth(1);
+            this.mensajeDemo = this.add.text(110, 390, "Muy bien! estas listo para empezar!", { fontFamily: 'Rammetto One', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF', align: "center" }).setDepth(1);
             this.groundDemo.body.allowGravity = false;
             this.playerDemo.visible = false;
             this.btnGo.visible = true;
             this.pillsDemo.clear(true, true);
 
-        } else if (this.cursors.left.isDown || this.goleftDemo) {
+        } else if (this.cursors.left.isDown && this.moverDerecha) {
             this.playerDemo.setVelocityX(-220);
             this.playerDemo.setVelocityY(0);
             this.playerDemo.anims.play('left', true);
-        } else if (this.cursors.right.isDown || this.gorightDemo) {
+            if (!this.moverIzquierda) {
+                this.moverIzquierda = true;
+            }
+        } else if (this.cursors.right.isDown) {
             this.playerDemo.setVelocityX(220);
             this.playerDemo.setVelocityY(0);
             this.playerDemo.anims.play('right', true);
+            if (!this.moverDerecha) {
+                this.moverDerecha = true;
+                this.textoAccion.setText('Vamos a la izquierda');
+            }
         } else {
             this.playerDemo.setVelocityX(0);
             this.playerDemo.anims.play('turn')
         }
 
-        if (time > this.time && this.playerDemo.visible == true) {
+        if (time > this.time && this.playerDemo.visible && this.moverIzquierda && this.moverDerecha && this.comenzarTarritos) {
             this.pillsFallingDemo();
             this.time += 2000;
+        }
+
+        this.pillsDemo.getChildren().forEach(item => {
+            if (item.y > 700) {
+                item.destroy();
+            }
+        });
+
+        if (this.playerDemo.visible && this.moverIzquierda && this.moverDerecha) {
+            this.textoAccion.y = 690;
+            this.textoAccion.x = 200;
+            this.mensajeDemo.destroy();
+            this.textoAccion.setText('Muy buen!\nAtrapa el tarrito C');
+            this.comenzarTarritos = true;
         }
 
         this.pillCollitionDemo = false;
@@ -149,23 +191,20 @@ class Demo extends Phaser.Scene {
     animatePlayerDemo() {
         this.anims.create({
             key: 'left',
-            frames: this.anims.generateFrameNumbers('dependientespriteDemo', { start: 3, end: 1 }), // prueba
-            // frames: this.anims.generateFrameNumbers('dependientespriteDemo', { start: 5, end: 3 }),
+            frames: this.anims.generateFrameNumbers('dependientespriteDemo', { start: 3, end: 1 }),
             frameRate: 4,
             repeat: -1,
         });
 
         this.anims.create({
             key: 'turn',
-            frames: [{ key: 'dependientespriteDemo', frame: 4 }], // prueba
-            // frames: [{ key: 'dependientespriteDemo', frame: 10 }],
+            frames: [{ key: 'dependientespriteDemo', frame: 4 }],
             frameRate: 4
         });
 
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('dependientespriteDemo', { start: 5, end: 7 }), // prueba
-            // frames: this.anims.generateFrameNumbers('dependientespriteDemo', { start: 15, end: 17 }),
+            frames: this.anims.generateFrameNumbers('dependientespriteDemo', { start: 5, end: 7 }),
             frameRate: 4,
             repeat: -1
         });
@@ -173,23 +212,24 @@ class Demo extends Phaser.Scene {
         this.anims.create({
             key: 'eatFromRight',
             frames: [{ key: 'dependientespriteDemo', frame: 8 }],
-            // frames: [{ key: 'dependientespriteDemo', frame: 10 }],
             frameRate: 4,
-            duration: 500
+            duration: 1000
         });
 
         this.anims.create({
             key: 'eatFromLeft',
             frames: [{ key: 'dependientespriteDemo', frame: 0 }],
             frameRate: 4,
-            duration: 500
+            duration: 1000
         });
     }
 
     pillsFallingDemo() {
-        var pill = this.pillsDemo.get(this.getRandomIntDemo(50, 490), -68).setCircle(2, 0, 120);
-        pill.answer = this.getRandomIntDemo(1, 3);
-        pill.setFrame(pill.answer - 1);
+        if (this.pillsDemo.countActive() < 3) {
+            var pill = this.pillsDemo.get(this.getRandomIntDemo(50, 490), -68).setCircle(2, 0, 120);
+            pill.answer = this.getRandomIntDemo(1, 3);
+            pill.setFrame(pill.answer - 1);
+        }
     }
 
     eatPillDemo(player, pill) {
@@ -197,15 +237,13 @@ class Demo extends Phaser.Scene {
         this.pillCollitionDemo = true;
         this.sideCollitionDemo = player.x > pill.x ? 1 : 0;
         pill.destroy();
-        this.gorightDemo = false;
-        this.goleftDemo = false;
     }
 
     getRandomIntDemo(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
+    }
 }
 
 export default Demo;

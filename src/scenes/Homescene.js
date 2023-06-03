@@ -29,8 +29,6 @@ class Homescene extends Phaser.Scene {
     this.nombres = this.add.image(270, 550, "nombres");
 
     let personaje = 1;
-    // let personaje = 'assets/jgb/Sprites_boy.png';
-    // let celebracion = 'assets/jgb/celebracion_niño.png';
 
     this.niño.on('pointerover', () => {
       this.niño.setFrame(1);
@@ -42,7 +40,6 @@ class Homescene extends Phaser.Scene {
       this.niño.setFrame(1);
       this.niña.setFrame(0);
       personaje = 1;
-      // personaje = 'assets/jgb/Sprites_boy.png';
     })
 
     this.niña.on('pointerover', () => {
@@ -54,9 +51,7 @@ class Homescene extends Phaser.Scene {
     }).on('pointerdown', () => {
       this.niña.setFrame(1);
       this.niño.setFrame(0);
-      console.log(1);
       personaje = 2;
-      // personaje = 'assets/dependientesprite_mujer.png';
     })
     
     this.comenzarBtn.on('pointerover', () => {
@@ -65,8 +60,7 @@ class Homescene extends Phaser.Scene {
       this.comenzarBtn.setFrame(0);
     }).on('pointerdown', () => {      
       this.scene.start("Demo", {
-        "path_dependiente": personaje == 1 ? 'assets/jgb/1.png' : 'assets/dependientesprite_mujer.png',
-        // "path_dependiente": personaje == 1 ? 'assets/jgb/Sprites_boy.png' : 'assets/dependientesprite_mujer.png',
+        "path_dependiente": personaje == 1 ? 'assets/jgb/Sprites_boy.png' : 'assets/dependientesprite_mujer.png',
         "celebracion": personaje == 1 ? 'assets/jgb/celebracion_niño.png' : 'assets/jgb/celebracion_niño.png',
         "perdiste": personaje == 1 ? 'assets/jgb/boy_sad_body.png' : 'assets/jgb/boy_sad_body.png',
         "happy": personaje == 1 ? 'assets/jgb/boy_happy.png' : 'assets/jgb/boy_happy.png',
@@ -77,10 +71,6 @@ class Homescene extends Phaser.Scene {
       });
     });
   }
-
-  // update(time, delta){
-  //   // this.time = time;
-  // }
 }
 
 export default Homescene;

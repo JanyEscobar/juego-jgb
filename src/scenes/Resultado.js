@@ -25,39 +25,22 @@ class Resultado extends Phaser.Scene {
   
     create(){
         this.background = this.add.image(270, 380, 'bghome');
+        this.tablero = this.add.image(270, 370, 'tablero');
         if (this.accion) {
-            this.tablero = this.add.image(270, 370, 'tablero');
-            // if (this.score == false) {
-            //     this.texto = this.add.image(270, 400, 'texto');
-            //     this.btnSiguiente = this.add.sprite(270, 730, 'btnSiguiente').setInteractive();
-            //     this.btnSiguiente.on('pointerover', () => {
-            //         this.btnSiguiente.setFrame(1);
-            //     }).on('pointerout', () => {
-            //         this.btnSiguiente.setFrame(0);
-            //     }).on('pointerdown', () => {      
-            //         this.scene.start("Firstscene");
-            //     });
-            // } else
-            if (this.score >= 60) {
-                this.ganaste = this.add.image(270, 315, 'ganaste');
-                this.mensaje = this.add.text(150, 348, this.score + " pts. / " + this.right + " respuestas \n    correctas de 5", { fontFamily: 'Rammetto One', fontSize: '28px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
-                this.imagen = this.add.image(270, 530, 'imagen');
-            } else {
-                this.tablero.setTexture('tablero1', 0);
-                this.ganaste = this.add.image(270, 290, 'perdiste');
-                this.mensaje = this.add.text(150, 320, this.score + " pts. / " + this.right + " respuestas \n    correctas de 5", { fontFamily: 'Rammetto One', fontSize: '28px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
-                this.imagen = this.add.image(270, 515, 'imagen');
-            }
+            this.ganaste = this.add.image(270, 315, 'ganaste');
+            this.mensaje = this.add.text(150, 348, this.score + " pts. / " + this.right + " respuestas \n    correctas de 5", { fontFamily: 'Rammetto One', fontSize: '28px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
+            this.imagen = this.add.image(270, 530, 'imagen');
         } else {
-            this.tablero = this.add.image(270, 370, 'tablero1');
-            this.btnReintentar = this.add.sprite(270, 730, 'btnReintentar').setInteractive();
-            
+            this.tablero.setTexture('tablero1', 0);
+            this.perdiste = this.add.image(270, 290, 'perdiste');
+            this.imagen = this.add.image(250, 440, 'imagen');
+            this.btnReintentar = this.add.sprite(270, 700, 'btnReintentar').setInteractive();
             this.btnReintentar.on('pointerover', () => {
                 this.btnReintentar.setFrame(1);
             }).on('pointerout', () => {
                 this.btnReintentar.setFrame(0);
             }).on('pointerdown', () => {      
-                this.scene.start("Firstscene");
+                this.scene.start("Game");
             });
         }
     }

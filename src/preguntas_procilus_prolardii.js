@@ -8,7 +8,8 @@ export default {
           "tres":"0",
          //  "cuatro":"Hacer ejercicio"
        },
-       "correcta":1
+       "correcta":1,
+       "loSabias": "    Upsss.... esa no era... \n\n\nSabias que Tarrito rojo cuenta con 11\nvitaminas que Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore\n magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris\n nisi ut aliquip ex ea commodo consequat."
     },
     {
        "pregunta":"¿Cuando se toman antibióticos mi cuerpo puede sufrir...?",
@@ -18,7 +19,8 @@ export default {
           "tres":"12",
          //  "cuatro":"Todas \nlas anteriores"
        },
-       "correcta":1
+       "correcta":1,
+       "loSabias": "    Upsss.... esa no era... \n\n\nSabias que Tarrito rojo cuenta con 11\nvitaminas que Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore\n magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris\n nisi ut aliquip ex ea commodo consequat."
     },
     {
        "pregunta":"¿Que es la diarrea del viajero?",
@@ -28,7 +30,8 @@ export default {
           "tres":"1",
          //  "cuatro":"Todas \nlas anteriores"
        },
-       "correcta":1
+       "correcta":1,
+       "loSabias": "    Upsss.... esa no era... \n\n\nSabias que Tarrito rojo cuenta con 11\nvitaminas que Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore\n magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris\n nisi ut aliquip ex ea commodo consequat."
     },
     {
        "pregunta":"¿Que sabor tiene nuestro Prolardii y Procilus D2?",
@@ -38,7 +41,8 @@ export default {
           "tres":"9",
          //  "cuatro":"Menta y uva"
        },
-       "correcta":1
+       "correcta":1,
+       "loSabias": "    Upsss.... esa no era... \n\n\nSabias que Tarrito rojo cuenta con 11\nvitaminas que Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore\n magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris\n nisi ut aliquip ex ea commodo consequat."
     },
     {
        "pregunta":"Cual es la cepa probiótica de Procilus D2?",
@@ -48,7 +52,8 @@ export default {
           "tres":"43",
          //  "cuatro":"Ninguna \nde las anteriores"
        },
-       "correcta":1
+       "correcta":1,
+       "loSabias": "    Upsss.... esa no era... \n\n\nSabias que Tarrito rojo cuenta con 11\nvitaminas que Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore\n magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris\n nisi ut aliquip ex ea commodo consequat."
     },
     {
        "pregunta":"¿Que cepa probiótica tiene Prolardii?",
@@ -58,7 +63,8 @@ export default {
           "tres":"7",
          //  "cuatro":"Todas \nlas anteriores"
        },
-       "correcta":1
+       "correcta":1,
+       "loSabias": "    Upsss.... esa no era... \n\n\nSabias que Tarrito rojo cuenta con 11\nvitaminas que Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore\n magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris\n nisi ut aliquip ex ea commodo consequat."
     }, 
     {
        "pregunta":"¿En que presentaciones viene Prolardii?",
@@ -68,7 +74,8 @@ export default {
           "tres":"2",
          //  "cuatro":"Plegadiza por 20 \ny 40 sobres"
        },
-       "correcta":1
+       "correcta":1,
+       "loSabias": "    Upsss.... esa no era... \n\n\nSabias que Tarrito rojo cuenta con 11\nvitaminas que Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore\n magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris\n nisi ut aliquip ex ea commodo consequat."
     },
     {
        "pregunta":"Los componentes de Procilus D2 son:...",
@@ -78,7 +85,8 @@ export default {
           "tres":"33",
          //  "cuatro":"Ninguna \nde las anteriores"
        },
-       "correcta":1
+       "correcta":1,
+       "loSabias": "    Upsss.... esa no era... \n\n\nSabias que Tarrito rojo cuenta con 11\nvitaminas que Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore\n magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris\n nisi ut aliquip ex ea commodo consequat."
     },  
     {
        "pregunta":"Los componentes de Prolardii son...",
@@ -88,7 +96,8 @@ export default {
           "tres":"21",
          //  "cuatro":"Todas \nlas anteriores"
        },
-       "correcta":1
+       "correcta":1,
+       "loSabias": "    Upsss.... esa no era... \n\n\nSabias que Tarrito rojo cuenta con 11\nvitaminas que Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do eiusmod\n tempor incididunt ut labore et dolore\n magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris\n nisi ut aliquip ex ea commodo consequat."
     }
  ]
 }
