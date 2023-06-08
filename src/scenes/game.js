@@ -1,3 +1,5 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { doc, updateDoc, getFirestore, getDoc } from "../../node_modules/firebase/firebase-firestore.js";
 import config from '../preguntas_procilus_prolardii.js'
 import { Niveles } from "./Niveles.js";
 import { Vidas } from "./componentes/Vidas.js";
@@ -16,12 +18,19 @@ class Game extends Phaser.Scene {
         this.happy = data.happy;
         this.sad = data.sad;
         this.comenzar = data.comenzar;
-        this.niveles = new Niveles(this);
+        this.id = data.id;
+        this.personaje = data.personaje;
+        this.nivel = data.nivel;
+        this.niveles = new Niveles(this, this.nivel);
         this.vidas = new Vidas(this, this.cantidadVidas);
     }
 
     preload() {
-        this.load.image('personajeLeche', 'assets/jgb/sprite_boy_milk.png');
+        if (this.personaje == 1) {
+            this.load.image('personajeLeche', 'assets/jgb/sprite_boy_milk.png');
+        } else {
+            this.load.image('personajeLeche', 'assets/jgb/sprite_girl_milk.png');
+        }
         this.load.image('tarrito', 'assets/jgb/tarrito.png');
         this.load.image('granola', 'assets/jgb/granola.png');
 
@@ -33,9 +42,7 @@ class Game extends Phaser.Scene {
         this.load.image('background5', 'assets/jgb/nivel_5.png');
         this.load.image('ground', 'assets/jgb/group_1.png');
         this.load.image('balloon', 'assets/jgb/balloon.png');
-        this.load.image('balloon_ok', 'assets/balloon_ok.png');
-        this.load.image('balloon_fail', 'assets/balloon_fail.png');
-        this.load.image('vidas', 'assets/jgb/vitaminas.png');
+        this.load.image('vidas', 'assets/jgb/vitaminas1.png');
         this.load.image('bullet', 'assets/bullet.png');
         this.load.image('cuadroMensajes', 'assets/jgb/cuadro_mensajes.png');
         this.load.image('siguienteNivel', 'assets/jgb/sigiente_nivel_texto.png');
@@ -44,8 +51,8 @@ class Game extends Phaser.Scene {
         this.load.image('ganaste', 'assets/jgb/ganaste.png');
 
         this.load.spritesheet('btnSiguiente', 'assets/jgb/spriteSiguiente.png', { frameWidth: 364, frameHeight: 94 });
-        this.load.spritesheet('cuenta', 'assets/jgb/cuenta.png', { frameWidth: 170, frameHeight: 155 });
-        this.load.spritesheet('dependientesprite', this.path_dependiente, { frameWidth: 140, frameHeight: 130 });
+        this.load.spritesheet('cuenta', 'assets/jgb/cuenta.png', { frameWidth: 175, frameHeight: 132 });
+        this.load.spritesheet('dependientesprite', this.path_dependiente, { frameWidth: 140, frameHeight: 125 });
         this.load.spritesheet('pill', 'assets/jgb/objetos.png', { frameWidth: 72, frameHeight: 148 });
 
         this.load.audio('bg_audio', ['assets/latin1.mp3']);
@@ -61,8 +68,6 @@ class Game extends Phaser.Scene {
         this.question_id = 1;
         this.answer;
         this.correctAnswer = 0;
-        this.balloon_ok = null;
-        this.balloon_fail = null;
         this.loSabias = '';
 
         this.bg_audio = this.sound.add('bg_audio', { loop: true });
@@ -81,25 +86,25 @@ class Game extends Phaser.Scene {
             } else {
                 this.player.anims.play('eatFromLeft');
             }
-            this.niveles.getPill();
             // this.scene.pause();
             setTimeout(() => {
+                this.niveles.getPill();
                 if (this.answer == this.correctAnswer) {
                     this.player.anims.play('correct');
-                    this.balloon_ok = this.add.image(this.player.x, this.player.y - 90, 'balloon_ok');
                 } else {
                     this.player.anims.play('fail');
-                    this.balloon_fail = this.add.image(this.player.x, this.player.y - 90, 'balloon_fail');
                     let sinVidas = this.vidas.accionVidas();
                     if (sinVidas) {
                         this.results(false);
                     }
                 }
-            }, 1000);
+            }, 166);
             setTimeout(() => {
                 if (this.mode == 1) {
+                    this.actualizarNivel();
                     if (this.answer == this.correctAnswer) {
                         this.right++;
+                        this.actualizarPuntos();
                         this.next_question(1);
                     } else {
                         this.next_question(0);
@@ -120,6 +125,16 @@ class Game extends Phaser.Scene {
             this.player.anims.play('turn')
         }
 
+        // Verificar si se está arrastrando el sprite
+        if (this.player && this.isDragging) {
+            if (this.mostrarIzquierda) {
+                this.player.anims.play('left', true);
+            }
+            if (this.mostrarDerecha) {
+                this.player.anims.play('right', true);
+            }
+        }
+
         if (time > this.respawn && this.player.visible == true) {
             this.niveles.pillsFalling();
             this.respawn += 2000;
@@ -134,7 +149,7 @@ class Game extends Phaser.Scene {
         this.anims.create({
             key: 'left',
             frames: this.anims.generateFrameNumbers('dependientesprite', { start: 3, end: 1 }),
-            frameRate: 4,
+            frameRate: 5,
             repeat: -1,
         });
 
@@ -147,36 +162,41 @@ class Game extends Phaser.Scene {
         this.anims.create({
             key: 'right',
             frames: this.anims.generateFrameNumbers('dependientesprite', { start: 5, end: 7 }),
-            frameRate: 4,
+            frameRate: 5,
             repeat: -1
         });
 
         this.anims.create({
             key: 'eatFromRight',
             frames: [{ key: 'dependientesprite', frame: 8 }],
-            duration: 1000
+            duration: 166
+            // frameRate: 166,
         });
 
         this.anims.create({
             key: 'eatFromLeft',
             frames: [{ key: 'dependientesprite', frame: 0 }],
-            duration: 1000
+            duration: 166
+            // frameRate: 166,
         });
 
         this.anims.create({
             key: 'fail',
             frames: [{ key: 'dependientesprite', frame: 9 }],
-            duration: 1000
+            duration: 166
+            // frameRate: 166,
         });
 
         this.anims.create({
             key: 'correct',
             frames: [{ key: 'dependientesprite', frame: 10 }],
-            duration: 1000
+            duration: 166
+            // frameRate: 166,
         });
     }
 
     next_question(valor) {
+        this.niveles.getPill();
         // this.scene.resume('Game');
         if (valor) {
             if (this.question_id < 5) {
@@ -192,7 +212,6 @@ class Game extends Phaser.Scene {
                 this.ganaste = this.add.image(270, 315, 'ganaste');
                 this.siguienteNivel = this.add.image(270, 400, 'siguienteNivel');
                 this.happy = this.add.image(270, 545, 'happy');
-                if (this.balloon_ok) { this.balloon_ok.destroy(); }
                 this.btnSiguiente = this.add.sprite(270, 730, 'btnSiguiente').setInteractive();
                 this.btnSiguiente.on('pointerover', () => {
                     this.btnSiguiente.setFrame(1);
@@ -221,7 +240,6 @@ class Game extends Phaser.Scene {
                 this.results();
             }
         } else {
-            if (this.balloon_fail) { this.balloon_fail.destroy(); }
             this.player.visible = false;
             this.ground.visible = false;
             this.balloon.visible = false;
@@ -260,7 +278,7 @@ class Game extends Phaser.Scene {
         if (this.mode) {
             this.score = this.right * 20;
             let imagen = this.celebracion;
-            if (this.score < 60) {
+            if (!tieneVida) {
                 imagen = this.sad;
             }
             // this.scene.resume('Game');
@@ -268,7 +286,8 @@ class Game extends Phaser.Scene {
                 'respuesta': tieneVida,
                 'score': this.score,
                 "right": this.right,
-                "imagen": imagen
+                "imagen": imagen,
+                "id": this.id
             });
         }
     }
@@ -297,7 +316,7 @@ class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.balloon = this.add.image(270, 85, 'balloon').setDepth(1).setAlpha(0.95);
         
-        this.player = this.physics.add.sprite(270, 400, 'dependientesprite');
+        this.player = this.physics.add.sprite(270, 400, 'dependientesprite').setInteractive();
         this.player.setCollideWorldBounds(true);
         
         this.nombreMundo = this.add.text(15, 15, "Mundo Tradicional", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
@@ -313,6 +332,37 @@ class Game extends Phaser.Scene {
         this.load_questions();
         
         this.animatePlayer();
+
+        // Habilita el arrastre del sprite
+        this.input.setDraggable(this.player);
+
+        // Evento para iniciar el arrastre
+        this.input.on('dragstart', function (pointer, gameObject) {
+            if (pointer.isDown) {
+                gameObject.setTint(0xff0000);
+                this.draggedObject = gameObject;
+                this.isDragging = true;
+              }
+        }, this);
+
+        // Evento para mover el sprite mientras se arrastra
+        this.input.on('drag', function (pointer, gameObject, dragX) {
+            if (dragX > gameObject.x) {
+                this.mostrarDerecha = true;
+                this.mostrarIzquierda = false;
+            }
+            if (dragX < gameObject.x) {
+                this.mostrarDerecha = false;
+                this.mostrarIzquierda = true;
+            }
+            gameObject.x = dragX;
+        }, this);
+
+        // Evento para finalizar el arrastre
+        this.input.on('dragend', function (pointer, gameObject) {
+            gameObject.clearTint();
+            this.isDragging = false;
+        }, this);
         
         this.niveles.create();
         this.vidas.create();
@@ -324,6 +374,42 @@ class Game extends Phaser.Scene {
             null,
             this
         );
+    }
+
+    async actualizarPuntos() {
+        let db = this.configData();
+        let docRef = doc(db, "usuarios", this.id);
+        let docSnap = await getDoc(docRef);
+        let washingtonRef = doc(db, "usuarios", this.id);
+        await updateDoc(washingtonRef, {
+            puntos: docSnap.data().puntos + 20
+        });
+    }
+
+    async actualizarNivel() {
+        let db = this.configData();
+        let docRef = doc(db, "usuarios", this.id);
+        let docSnap = await getDoc(docRef);
+        let washingtonRef = doc(db, "usuarios", this.id);
+        let siguiente = docSnap.data().nivel == 5 ? 1 : docSnap.data().nivel + 1;
+        await updateDoc(washingtonRef, {
+            nivel: siguiente
+        });
+    }
+
+    configData() {
+        let firebaseConfig = {
+            apiKey: "AIzaSyBRtGvmHjHUHksWz_3LD4Xk998GCJBWZwU",
+            authDomain: "juego-jgb-54a43.firebaseapp.com",
+            projectId: "juego-jgb-54a43",
+            storageBucket: "juego-jgb-54a43.appspot.com",
+            messagingSenderId: "809198562223",
+            appId: "1:809198562223:web:6958a36d10fc3f9a551d5a",
+            measurementId: "G-W01GKVNYE0"
+        };
+        let app = initializeApp(firebaseConfig);
+        let db = getFirestore(app);
+        return db;
     }
 }
 

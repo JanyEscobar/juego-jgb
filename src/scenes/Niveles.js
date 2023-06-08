@@ -6,8 +6,10 @@ import { Nivel5 } from './niveles/Nivel5.js';
 import { Publicidad1 } from "./niveles/Publicidad1.js";
 
 export class Niveles {
-    constructor(scene) {
+    constructor(scene, nivel) {
         this.relatedScene = scene;
+        this.nivelActual = nivel;
+
         this.niveles = [
             Nivel5,
             Publicidad1,
@@ -19,6 +21,12 @@ export class Niveles {
             Publicidad1,
             Nivel1,
         ];
+        if (this.nivelActual != 1 && this.nivelActual < 6) {
+            let cantidad = (this.nivelActual * 2) - 2;
+            for (let i = 0; i < cantidad; i++) {
+                this.niveles.pop();
+            }
+        }
     }
 
     create() {
@@ -28,9 +36,18 @@ export class Niveles {
     }
 
     pillsFalling() {
+        let posiciones = [50, 245, 490];
+        let posicionesActuales = [];
         if (this.currentPhase.pills) {
             if (this.currentPhase.pills.countActive() < 3) {
-                var pill = this.currentPhase.pills.get(this.getRandomInt(50, 490), -68).setCircle(2, 0, 120);
+                this.currentPhase.pills.getChildren().forEach(item => {
+                    posicionesActuales.push(item.x);
+                });
+                let p = posiciones[this.getRandomInt(0, 2)];
+                while (posicionesActuales.includes(p)) {
+                    p = posiciones[this.getRandomInt(0, 2)];
+                }
+                var pill = this.currentPhase.pills.get(p, -68).setCircle(2, 0, 120);
                 pill.answer = this.getRandomInt(1, 3);
                 pill.setFrame(pill.answer - 1);
             }

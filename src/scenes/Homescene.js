@@ -3,8 +3,11 @@ class Homescene extends Phaser.Scene {
     super("Homescene");
   }
 
-  // init(){
-  // }
+  init(data){
+    this.demo = data.demo ?? false;
+    this.nivel = data.nivel ?? 1;
+    this.id = data.id;
+  }
 
   preload(){
     this.load.image('bghome', 'assets/jgb/home.png');
@@ -12,8 +15,8 @@ class Homescene extends Phaser.Scene {
     this.load.image('seleccion', 'assets/jgb/Titulo.png');
 
     this.load.image('nombres', 'assets/jgb/nombres.png');
-    this.load.spritesheet('niñosprite', 'assets/jgb/spriteNiño.png', { frameWidth: 230, frameHeight: 200 });
-    this.load.spritesheet('niñasprite', 'assets/jgb/spriteNiña.png', { frameWidth: 225, frameHeight: 210 });
+    this.load.spritesheet('niñosprite', 'assets/jgb/spriteNiño.png', { frameWidth: 230, frameHeight: 230 });
+    this.load.spritesheet('niñasprite', 'assets/jgb/spriteNiña.png', { frameWidth: 225, frameHeight: 230 });
     this.load.spritesheet('comenzarsprite', 'assets/jgb/spriteSiguiente.png', { frameWidth: 364, frameHeight: 94 });
   }
 
@@ -23,7 +26,7 @@ class Homescene extends Phaser.Scene {
     this.background = this.add.image(270, 380, 'bghome');
     this.logo = this.add.image(270, 105, 'logo');
     this.seleccion = this.add.image(270, 240, 'seleccion');
-    this.niño = this.add.sprite(164, 410, 'niñosprite').setInteractive();
+    this.niño = this.add.sprite(164, 385, 'niñosprite').setInteractive();
     this.niña = this.add.sprite(370, 385, 'niñasprite').setInteractive();
     this.comenzarBtn = this.add.sprite(270, 640, 'comenzarsprite').setInteractive();
     this.nombres = this.add.image(270, 550, "nombres");
@@ -33,24 +36,18 @@ class Homescene extends Phaser.Scene {
     this.niño.on('pointerover', () => {
       this.niño.setFrame(1);
     }).on('pointerout', () => {
-      if(this.niña.frame == 1){
         this.niño.setFrame(0);
-      }
     }).on('pointerdown', () => {
       this.niño.setFrame(1);
-      this.niña.setFrame(0);
       personaje = 1;
     })
 
     this.niña.on('pointerover', () => {
       this.niña.setFrame(1);
     }).on('pointerout', () => {
-      if(this.niño.frame == 1){
         this.niña.setFrame(0);
-      }      
     }).on('pointerdown', () => {
       this.niña.setFrame(1);
-      this.niño.setFrame(0);
       personaje = 2;
     })
     
@@ -58,17 +55,25 @@ class Homescene extends Phaser.Scene {
       this.comenzarBtn.setFrame(1);
     }).on('pointerout', () => {
       this.comenzarBtn.setFrame(0);
-    }).on('pointerdown', () => {      
-      this.scene.start("Demo", {
-        "path_dependiente": personaje == 1 ? 'assets/jgb/Sprites_boy.png' : 'assets/dependientesprite_mujer.png',
-        "celebracion": personaje == 1 ? 'assets/jgb/celebracion_niño.png' : 'assets/jgb/celebracion_niño.png',
-        "perdiste": personaje == 1 ? 'assets/jgb/boy_sad_body.png' : 'assets/jgb/boy_sad_body.png',
-        "happy": personaje == 1 ? 'assets/jgb/boy_happy.png' : 'assets/jgb/boy_happy.png',
-        "sad": personaje == 1 ? 'assets/jgb/boy_sad.png' : 'assets/jgb/boy_sad.png',
-        "personajeDemo": personaje == 1 ? 'assets/jgb/personaje_niño.png' : 'assets/jgb/personaje_niño.png',
+    }).on('pointerdown', () => {
+      let variables = {
+        "path_dependiente": personaje == 1 ? 'assets/jgb/Sprites_boy.png' : 'assets/jgb/Sprites_gril.png',
+        "celebracion": personaje == 1 ? 'assets/jgb/celebracion_niño.png' : 'assets/jgb/celebracion_niña.png',
+        "perdiste": personaje == 1 ? 'assets/jgb/boy_sad_body.png' : 'assets/jgb/girl_sad_body.png',
+        "happy": personaje == 1 ? 'assets/jgb/boy_happy.png' : 'assets/jgb/girl_happy.png',
+        "sad": personaje == 1 ? 'assets/jgb/boy_sad.png' : 'assets/jgb/girl_sad.png',
+        "personajeDemo": personaje == 1 ? 'assets/jgb/personaje_niño.png' : 'assets/jgb/personaje_niña.png',
         "comenzar": true,
-        "time": this.time
-      });
+        "time": this.time,
+        "nivel": this.nivel,
+        "id": this.id,
+        "personaje": personaje,
+      };
+      if (!this.demo) {
+        this.scene.start("Demo", variables);
+      } else {
+        this.scene.start("Game", variables);
+      }
     });
   }
 }
