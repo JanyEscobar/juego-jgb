@@ -20,15 +20,21 @@ export class Vidas {
             y: 4
           }
         }).setDepth(1);
+
+        // this.vidasActuales.getChildren().forEach((elemento, index) => {
+        //     this.relatedScene.add.text(elemento.x - 10, elemento.y - 10, 'B'+(index+1), { fontFamily: 'Rammetto One', fontSize: '20px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
+        // });
     }
 
     accionVidas() {
         if (this.vidasActuales.countActive() == 0) {
-            // this.relatedScene.endGame();
             return true;
         }
         let currentLiveLost = this.vidasActuales.getFirstAlive();
         currentLiveLost.disableBody(true, true);
+        // this.vidasActuales.getChildren().forEach((elemento, index) => {
+        //     this.relatedScene.add.text(elemento.x - 10, elemento.y - 10, 'B'+(index+1), { fontFamily: 'Rammetto One', fontSize: '20px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
+        // });
         return false;
     }
 }

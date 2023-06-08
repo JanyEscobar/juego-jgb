@@ -1,9 +1,11 @@
+import InputTextPlugin from '../node_modules/phaser3-rex-plugins/plugins/inputtext-plugin.js';
 import Home from './scenes/Home.js';
 import Homescene from './scenes/Homescene.js';
 import Registro from './scenes/Registro.js';
 import Resultado from './scenes/Resultado.js';
 import Demo from './scenes/Demo.js';
 import Game from './scenes/game.js';
+import Score from './scenes/Score.js';
 
 const config = {
   title: 'Juego-JGB',
@@ -12,8 +14,8 @@ const config = {
 
   pixelArt: true,
 
-  type: Phaser.AUTO,
-  // type: Phaser.CANVAS,
+  // type: Phaser.AUTO,
+  type: Phaser.CANVAS,
   width: 540,
   height: 780,
   parent: 'container',
@@ -40,8 +42,19 @@ const config = {
   dom: {
       createContainer: true
   },
+  plugins: {
+    global: [{
+        key: 'rexInputTextPlugin',
+        plugin: InputTextPlugin,
+        start: true
+    },]
+  },
+  input: {
+    touch: true,
+  },
 
-  scene: [Home, Registro, Demo, Homescene, Resultado, Game]
+  // scene: [Score]
+  scene: [Home, Registro, Demo, Homescene, Resultado, Game, Score]
 };
 
 const game = new Phaser.Game(config);
