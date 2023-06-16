@@ -6,6 +6,7 @@ import Resultado from './scenes/Resultado.js';
 import Demo from './scenes/Demo.js';
 import Game from './scenes/game.js';
 import Score from './scenes/Score.js';
+import Prueba from './scenes/Prueba.js';
 
 const config = {
   title: 'Juego-JGB',
@@ -53,8 +54,17 @@ const config = {
     touch: true,
   },
 
-  // scene: [Score]
+  // scene: [Prueba]
   scene: [Home, Registro, Demo, Homescene, Resultado, Game, Score]
 };
 
 const game = new Phaser.Game(config);
+
+function resize() {
+  var scaleX = window.innerWidth / game.config.width;
+  var scaleY = window.innerHeight / game.config.height;
+  var scale = Math.min(scaleX, scaleY);
+  game.canvas.setAttribute('style', 'transform: scale(' + scale + ');');
+}
+
+window.addEventListener('resize', resize);
