@@ -18,9 +18,9 @@ class Registro extends Phaser.Scene {
     }
   
     preload(){
-        this.load.image('bghome', 'assets/jgb/home.png');
+        this.load.image('bgRegistro', 'assets/jgb/home.png');
         this.load.image('powered', 'assets/jgb/powered.png');
-        this.load.spritesheet('btnEntrar', 'assets/jgb/boton_entrada.png', { frameWidth: 364, frameHeight: 94 });
+        this.load.image('btnEntrar', 'assets/jgb/btnEntrada.png');
     }
   
     create(){
@@ -38,8 +38,8 @@ class Registro extends Phaser.Scene {
         let auth = getAuth();
         let db = getFirestore(app);
     
-        this.background = this.add.image(270, 380, 'bghome');
-        this.btnEntrar = this.add.sprite(270, 540, 'btnEntrar').setInteractive();
+        this.background = this.add.image(270, 380, 'bgRegistro');
+        this.btnEntrar = this.add.sprite(270, 560, 'btnEntrar').setInteractive();
         this.powered = this.add.sprite(270, 763, 'powered').setInteractive();
         let inputNombre = this.add.rexInputText(240, 170, 300, 52, {
             backgroundColor: '#FFFFFF',
@@ -95,11 +95,7 @@ class Registro extends Phaser.Scene {
         selectElement.id = 'selectRol';
         this.add.dom(240, !this.email ? 450 : 380, selectElement).setOrigin(0.5);
         
-        this.btnEntrar.on('pointerover', () => {
-            this.btnEntrar.setFrame(1);
-        }).on('pointerout', () => {
-            this.btnEntrar.setFrame(0);
-        }).on('pointerdown', () => {      
+        this.btnEntrar.on('pointerdown', () => {      
             let email = $('#inputEmail').val();
             let clave = $('#inputClave').val();
             let nombre = $('#inputNombre').val();

@@ -11,19 +11,19 @@ class Score extends Phaser.Scene {
     }
   
     preload(){
-        this.load.image('bghome', 'assets/jgb/home.png');
+        this.load.image('bgScore', 'assets/jgb/home.png');
         this.load.image('tablero', 'assets/jgb/tablero.png');
         this.load.image('textoResultados', 'assets/jgb/Resultados.png');
         this.load.image('card', 'assets/jgb/card.png');
         this.load.image('por_defecto', 'assets/jgb/por_defecto.png');
     
-        this.load.spritesheet('btnReintentar', 'assets/jgb/boton_reintentar.png', { frameWidth: 364, frameHeight: 94 });
+        this.load.spritesheet('btnReintentar', 'assets/jgb/btnReintentar.png', { frameWidth: 364, frameHeight: 94 });
     }
   
     async create(){
-        this.background = this.add.image(270, 380, 'bghome');
+        this.background = this.add.image(270, 380, 'bgScore');
         this.tablero = this.add.image(270, 370, 'tablero');
-        this.textoResultados = this.add.image(270, 315, 'textoResultados');
+        this.textoResultados = this.add.image(270, 300, 'textoResultados');
         this.cards = this.physics.add.staticGroup({
             setScale: { x: 1, y: 0.7 },
             key: 'card',
@@ -44,14 +44,13 @@ class Score extends Phaser.Scene {
             this.add.text(380, elemento.y - 10, info[index][1], { fontFamily: 'Arial Black', fontSize: '20px', fontStyle: 'normal', color: '#000000' }).setDepth(1);
             posY += elemento.height - 2;
         });
-        // this.mensaje = this.add.text(100, 350, info, { fontFamily: 'Arial Black', fontSize: '28px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
         this.btnReintentar = this.add.sprite(270, 730, 'btnReintentar').setInteractive();
         this.btnReintentar.on('pointerover', () => {
-            this.btnReintentar.setFrame(1);
+            // this.btnReintentar.setFrame(1);
         }).on('pointerout', () => {
-            this.btnReintentar.setFrame(0);
+            // this.btnReintentar.setFrame(0);
         }).on('pointerdown', () => {      
-            this.scene.start("Game", {nivel: 1});
+            this.scene.start("Game");
         });
     }
 
