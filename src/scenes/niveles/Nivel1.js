@@ -23,5 +23,6 @@ export class Nivel1 extends Phase {
         }, this.relatedScene);
 
         this.relatedScene.cuenta.anims.play('tiempo');
+        console.log('nivel 1');
     }
 }

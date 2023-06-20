@@ -18,7 +18,9 @@ export class Phase {
       this.relatedScene.pillCollition = true;
       this.relatedScene.sideCollition = player.x > pill.x ? 1 : 0;
       this.relatedScene.swallow.play();
-      this.relatedScene.bg_audio.pause();
+      if (this.relatedScene.answer != 6) {
+        this.relatedScene.bg_audio.pause();
+      }
       pill.destroy();
       this.relatedScene.goright = false;
       this.relatedScene.goleft = false;

@@ -4,21 +4,32 @@ import { Nivel3 } from './niveles/Nivel3.js';
 import { Nivel4 } from './niveles/Nivel4.js';
 import { Nivel5 } from './niveles/Nivel5.js';
 import { Publicidad1 } from "./niveles/Publicidad1.js";
+import { Publicidad2 } from "./niveles/Publicidad2.js";
+import { Publicidad3 } from './niveles/Publicidad3.js';
+import { Publicidad4 } from './niveles/Publicidad4.js';
 
 export class Niveles {
-    constructor(scene) {
+    constructor(scene, nivel) {
         this.relatedScene = scene;
+        this.nivelActual = nivel;
+
         this.niveles = [
             Nivel5,
-            Publicidad1,
+            Publicidad4,
             Nivel4,
-            Publicidad1,
+            Publicidad3,
             Nivel3,
-            Publicidad1,
+            Publicidad2,
             Nivel2,
             Publicidad1,
             Nivel1,
         ];
+        if (this.nivelActual != 1 && this.nivelActual < 6) {
+            let cantidad = (this.nivelActual * 2) - 2;
+            for (let i = 0; i < cantidad; i++) {
+                this.niveles.pop();
+            }
+        }
     }
 
     create() {
@@ -28,10 +39,23 @@ export class Niveles {
     }
 
     pillsFalling() {
+        let posiciones = [50, 245, 490];
+        let posicionesActuales = [];
         if (this.currentPhase.pills) {
             if (this.currentPhase.pills.countActive() < 3) {
-                var pill = this.currentPhase.pills.get(this.getRandomInt(50, 490), -68).setCircle(2, 0, 120);
-                pill.answer = this.getRandomInt(1, 3);
+                let cantidadSprite = 5;
+                this.currentPhase.pills.getChildren().forEach(item => {
+                    posicionesActuales.push(item.x);
+                });
+                let p = posiciones[this.getRandomInt(0, 2)];
+                while (posicionesActuales.includes(p)) {
+                    p = posiciones[this.getRandomInt(0, 2)];
+                }
+                if (this.relatedScene.vidas.vidasActuales.countActive() < 2) {
+                    cantidadSprite = 6;
+                }
+                var pill = this.currentPhase.pills.get(p, -68).setCircle(2, 0, 120);
+                pill.answer = this.getRandomInt(1, cantidadSprite);
                 pill.setFrame(pill.answer - 1);
             }
         }
@@ -44,7 +68,9 @@ export class Niveles {
     }
 
     getPill() {
-        return this.currentPhase.pills.clear(true, true);
+        if (this.currentPhase.pills) {
+            return this.currentPhase.pills.clear(true, true);
+        }
     }
 
     update() {

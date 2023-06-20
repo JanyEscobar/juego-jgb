@@ -2,12 +2,13 @@ import { Phase } from './Phase.js';
 
 export class Nivel4 extends Phase {
     create() {
+        this.relatedScene.bg_audio.resume();
         this.background = this.relatedScene.background.setTexture('background4', 0);
         this.relatedScene.nombreBackground = 'background4';
         this.relatedScene.player.visible = false;
         this.relatedScene.player.x = 270;
         this.pills = this.relatedScene.physics.add.group({
-            defaultKey: 'pill'
+            defaultKey: 'pill2'
         });
         this.relatedScene.nombreMundo.setText('Mundo JGB');
         this.configureColisions();
