@@ -31,7 +31,7 @@ class Demo extends Phaser.Scene {
         this.load.image('flechaizquierda', 'assets/flechaizquierda.png');
         this.load.image('cuadro_mensaje', 'assets/cuadro_mensaje.png');
         this.load.image('personajeDemo', this.personajeDemo);
-        this.load.spritesheet('pillDemo', 'assets/objetos.png', { frameWidth: 75.3, frameHeight: 196 });
+        this.load.spritesheet('pillDemo', 'assets/objetos.png', { frameWidth: 84, frameHeight: 185 });
         // this.load.spritesheet('dependientespriteDemo', this.path_dependiente, { frameWidth: 128, frameHeight: 129 });
         this.load.spritesheet('dependientespriteDemo', this.path_dependiente, { frameWidth: 140, frameHeight: 125 }); // 1
         this.load.spritesheet('cuenta', 'assets/cuenta.png', { frameWidth: 175, frameHeight: 132 });
@@ -73,7 +73,7 @@ class Demo extends Phaser.Scene {
         this.cuenta.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function() {
             this.playerDemo.visible = true;
             this.cuenta.visible = false;
-            // this.flechaDerecha = this.add.image(500, 500, 'flechaderecha');
+            this.flechaDerecha = this.add.image(500, 500, 'flechaderecha');
         }, this);
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -158,8 +158,8 @@ class Demo extends Phaser.Scene {
             this.personajeDemo.visible = false;
             this.tarritos.visible = false;
             this.mundo.x = 15;
-            this.mensajeDemo = this.add.text(550 * 0.13, 630, "Desliza el personaje a los lados y\n atrapa el tarrito.", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
-            this.textoAccion = this.add.text(550 * 0.3, 710, 'Vamos a la derecha', { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
+            this.mensajeDemo = this.add.text(window.innerWidth * 0.3, 630, "Desliza el personaje a los lados y\n atrapa el tarrito Si estas en un\n ordenador, utiliza el teclado", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
+            this.textoAccion = this.add.text(window.innerWidth * 0.47, 710, 'Vamos a la derecha', { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
             this.cuenta.visible = true;
             this.cuenta.anims.play('tiempo');
         });
@@ -194,18 +194,16 @@ class Demo extends Phaser.Scene {
         };
         let app = initializeApp(firebaseConfig);
         let db = getFirestore(app);
-        this.actualizarDemo(db, this.id);
+        // this.actualizarDemo(db, this.id);
     }
 
     update(time, delta) {
         if (this.pillCollitionDemo) {
-            this.scene.pause();
             if (this.sideCollitionDemo) {
                 this.playerDemo.anims.play('eatFromRight');
             } else {
                 this.playerDemo.anims.play('eatFromLeft');
             }
-            this.scene.resume('Demo');
 
             if (this.answerDemo == 3) {
                 this.groundDemo.destroy();
@@ -213,13 +211,13 @@ class Demo extends Phaser.Scene {
                 this.textoAccion.destroy();
                 this.background.setTexture('background');
                 this.groundDemo = this.physics.add.image(270, 400, 'cuadro_mensaje').setDepth(1);
-                this.mensajeDemo = this.add.text(550 * 0.18, 360, "¡Muy bien! estas\n listo para empezar!", { fontFamily: 'Arial Black', fontSize: '30px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
+                this.mensajeDemo = this.add.text(window.innerWidth * 0.35, 360, "¡Muy bien! estas\n listo para empezar!", { fontFamily: 'Arial Black', fontSize: '30px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
                 this.groundDemo.body.allowGravity = false;
                 this.playerDemo.visible = false;
                 this.btnGo.visible = true;
                 this.pillsDemo.clear(true, true);
             } else {
-                this.textoAccion.x = 550 * 0.25;
+                this.textoAccion.x = window.innerWidth * 0.4;
                 this.textoAccion.setText('Debes atrapar el tarrito\ncon la letra C');
             }
 
@@ -229,7 +227,7 @@ class Demo extends Phaser.Scene {
             this.playerDemo.anims.play('left', true);
             if (!this.moverIzquierda) {
                 this.moverIzquierda = true;
-                // this.flechaizquierda.destroy();
+                this.flechaizquierda.destroy();
             }
         } else if (this.cursors.right.isDown) {
             this.playerDemo.setVelocityX(220);
@@ -237,13 +235,11 @@ class Demo extends Phaser.Scene {
             this.playerDemo.anims.play('right', true);
             if (!this.moverDerecha) {
                 this.moverDerecha = true;
-                // this.flechaDerecha.destroy();
+                this.flechaDerecha.destroy();
                 this.textoAccion.setText('Vamos a la izquierda');
-                // this.scene.pause();
-                // if (!this.dejarDeMostrar) {
-                //     this.flechaizquierda = this.add.image(40, 500, 'flechaizquierda');
-                // }
-                // this.scene.resume('Demo');
+                this.scene.pause();
+                this.flechaizquierda = this.add.image(40, 500, 'flechaizquierda');
+                this.scene.resume('Demo');
             }
         } else {
             this.playerDemo.setVelocityX(0);
@@ -254,14 +250,14 @@ class Demo extends Phaser.Scene {
         if (this.playerDemo && this.isDragging) {
             if (this.mostrarIzquierda) {
                 this.playerDemo.anims.play('left', true);
-                // this.flechaizquierda.destroy();
+                this.flechaizquierda.destroy();
             }
             if (this.mostrarDerecha) {
                 this.playerDemo.anims.play('right', true);
-                // this.flechaDerecha.destroy();
-                // if (!this.dejarDeMostrar) {
-                //     this.flechaizquierda = this.add.image(40, 500, 'flechaizquierda');
-                // }
+                this.flechaDerecha.destroy();
+                if (!this.dejarDeMostrar) {
+                    this.flechaizquierda = this.add.image(40, 500, 'flechaizquierda');
+                }
             }
         }
 
@@ -278,9 +274,9 @@ class Demo extends Phaser.Scene {
 
         if (this.playerDemo.visible && this.moverIzquierda && this.moverDerecha && !this.dejarDeMostrar) {
             this.textoAccion.y = 650;
-            this.textoAccion.x = 550 * 0.18;
+            this.textoAccion.x = window.innerWidth * 0.34;
             this.mensajeDemo.destroy();
-            // this.flechaizquierda.destroy();
+            this.flechaizquierda.destroy();
             this.textoAccion.setText('Muy buen!\nAtrapa el tarrito con la letra C');
             this.comenzarTarritos = true;
             this.dejarDeMostrar = true;
@@ -351,9 +347,8 @@ class Demo extends Phaser.Scene {
                 p = posiciones[this.getRandomIntDemo(0, 2)];
             }
             var pill = this.pillsDemo.get(p, -68).setCircle(2, 0, 120);
-            pill.answer = this.getRandomIntDemo(1, 7);
+            pill.answer = this.getRandomIntDemo(1, 5);
             pill.setFrame(pill.answer - 1);
-            // pill.setFrame(6);
         }
     }
 

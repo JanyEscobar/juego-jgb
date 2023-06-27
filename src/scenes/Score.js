@@ -11,13 +11,13 @@ class Score extends Phaser.Scene {
     }
   
     preload(){
-        this.load.image('bgScore', 'assets/jgb/home.png');
-        this.load.image('tablero', 'assets/jgb/tablero.png');
-        this.load.image('textoResultados', 'assets/jgb/Resultados.png');
-        this.load.image('card', 'assets/jgb/card.png');
-        this.load.image('por_defecto', 'assets/jgb/por_defecto.png');
+        this.load.image('bgScore', 'assets/home.png');
+        this.load.image('tablero', 'assets/tablero.png');
+        this.load.image('textoResultados', 'assets/Resultados.png');
+        this.load.image('card', 'assets/card.png');
+        this.load.image('por_defecto', 'assets/por_defecto.png');
     
-        this.load.spritesheet('btnReintentar', 'assets/jgb/btnReintentar.png', { frameWidth: 364, frameHeight: 94 });
+        this.load.spritesheet('btnReintentar', 'assets/btnReintentar.png', { frameWidth: 364, frameHeight: 94 });
     }
   
     async create(){
@@ -50,7 +50,8 @@ class Score extends Phaser.Scene {
         }).on('pointerout', () => {
             // this.btnReintentar.setFrame(0);
         }).on('pointerdown', () => {      
-            this.scene.start("Game");
+            this.scene.start("Homescene");
+            // this.scene.start("Game");
         });
     }
 

@@ -43,7 +43,7 @@ export class Niveles {
         let posicionesActuales = [];
         if (this.currentPhase.pills) {
             if (this.currentPhase.pills.countActive() < 3) {
-                let cantidadSprite = 5;
+                let cantidadSprite = 7;
                 this.currentPhase.pills.getChildren().forEach(item => {
                     posicionesActuales.push(item.x);
                 });
@@ -52,11 +52,12 @@ export class Niveles {
                     p = posiciones[this.getRandomInt(0, 2)];
                 }
                 if (this.relatedScene.vidas.vidasActuales.countActive() < 2) {
-                    cantidadSprite = 6;
+                    cantidadSprite = 8;
                 }
                 var pill = this.currentPhase.pills.get(p, -68).setCircle(2, 0, 120);
                 pill.answer = this.getRandomInt(1, cantidadSprite);
-                pill.setFrame(pill.answer - 1);
+                // pill.setFrame(pill.answer - 1);
+                pill.setFrame(3);
             }
         }
     }

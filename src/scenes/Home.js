@@ -11,12 +11,12 @@ class Home extends Phaser.Scene {
     }
   
     preload(){
-        this.load.image('bghome', 'assets/jgb/inicio.png');
-        this.load.image('google', 'assets/jgb/google.png');
-        this.load.image('outlook', 'assets/jgb/outlook.png');
-        this.load.image('btnRegistrarse', 'assets/jgb/btnRegistrar.png');
+        this.load.image('bghome', 'assets/inicio1.png');
+        this.load.image('google', 'assets/google.png');
+        this.load.image('outlook', 'assets/outlook.png');
+        this.load.image('btnRegistrarse', 'assets/btnRegistrar.png');
 
-        this.load.spritesheet('btnEntrar', 'assets/jgb/btnEntrada.png', { frameWidth: 364, frameHeight: 94 });
+        this.load.spritesheet('btnEntrar', 'assets/btnEntrada.png', { frameWidth: 364, frameHeight: 94 });
     }
   
     create(){

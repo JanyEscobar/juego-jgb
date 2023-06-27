@@ -15,10 +15,13 @@ const config = {
 
   pixelArt: true,
 
-  // type: Phaser.AUTO,
-  type: Phaser.CANVAS,
+  type: Phaser.AUTO,
   width: 540,
   height: 780,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
   parent: 'container',
   backgroundColor: '#FFFFFF',
 
@@ -54,17 +57,7 @@ const config = {
     touch: true,
   },
 
-  // scene: [Prueba]
   scene: [Home, Registro, Demo, Homescene, Resultado, Game, Score]
 };
 
 const game = new Phaser.Game(config);
-
-function resize() {
-  var scaleX = window.innerWidth / game.config.width;
-  var scaleY = window.innerHeight / game.config.height;
-  var scale = Math.min(scaleX, scaleY);
-  game.canvas.setAttribute('style', 'transform: scale(' + scale + ');');
-}
-
-window.addEventListener('resize', resize);

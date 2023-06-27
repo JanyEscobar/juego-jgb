@@ -16,22 +16,22 @@ class Firstscene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', 'assets/jgb/nivel_1.png');
-    this.load.image('background2', 'assets/jgb/nivel_2.png');
-    this.load.image('background3', 'assets/jgb/nivel_3.png');
-    this.load.image('background4', 'assets/jgb/nivel_4.png');
-    this.load.image('background5', 'assets/jgb/nivel_5.png');
-    this.load.image('ground', 'assets/jgb/group_1.png');
-    this.load.image('balloon', 'assets/jgb/balloon.png');
+    this.load.image('background', 'assets/nivel_1.png');
+    this.load.image('background2', 'assets/nivel_2.png');
+    this.load.image('background3', 'assets/nivel_3.png');
+    this.load.image('background4', 'assets/nivel_4.png');
+    this.load.image('background5', 'assets/nivel_5.png');
+    this.load.image('ground', 'assets/group_1.png');
+    this.load.image('balloon', 'assets/balloon.png');
     this.load.image('balloon_ok', 'assets/balloon_ok.png');
     this.load.image('balloon_fail', 'assets/balloon_fail.png');
-    this.load.image('vidas', 'assets/jgb/vitaminas.png');
-    this.load.image('cuadroMensajes', 'assets/jgb/cuadro_mensajes.png');
+    this.load.image('vidas', 'assets/vitaminas.png');
+    this.load.image('cuadroMensajes', 'assets/cuadro_mensajes.png');
     // this.load.image('perdiste', 'assets/perdiste.png');
 
     this.load.spritesheet('dependientesprite', this.path_dependiente, { frameWidth: 140, frameHeight: 130 }); // prueba
     // this.load.spritesheet('dependientesprite', this.path_dependiente, { frameWidth: 96.8, frameHeight: 125 });
-    this.load.spritesheet('pill', 'assets/jgb/objetos.png', { frameWidth: 72, frameHeight: 148 });
+    this.load.spritesheet('pill', 'assets/objetos.png', { frameWidth: 72, frameHeight: 148 });
     this.load.spritesheet('checker', 'assets/checkbox.png', { frameWidth: 29, frameHeight: 25 });
     this.load.image('bullet', 'assets/bullet.png');
     this.load.audio('bg_audio', ['assets/latin1.mp3']);

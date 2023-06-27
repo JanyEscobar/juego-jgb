@@ -18,9 +18,9 @@ class Registro extends Phaser.Scene {
     }
   
     preload(){
-        this.load.image('bgRegistro', 'assets/jgb/home.png');
-        this.load.image('powered', 'assets/jgb/powered.png');
-        this.load.image('btnEntrar', 'assets/jgb/btnEntrada.png');
+        this.load.image('bgRegistro', 'assets/home1.png');
+        this.load.image('powered', 'assets/powered.png');
+        this.load.image('btnEntrar', 'assets/btnEntrada.png');
     }
   
     create(){

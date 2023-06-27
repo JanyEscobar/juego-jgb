@@ -4,7 +4,7 @@ class Prueba extends Phaser.Scene {
     }
   
     preload(){
-        this.load.image('bgPrueba', 'assets/jgb/home.png');
+        this.load.image('bgPrueba', 'assets/home.png');
         this.load.video('videoPublicidad1', ['assets/tarrito_rojo.mp4']);
     }
   

@@ -10,14 +10,14 @@ class Homescene extends Phaser.Scene {
   }
 
   preload(){
-    this.load.image('bghomescene', 'assets/jgb/home.png');
-    this.load.image('logo', 'assets/jgb/logo_TR.png');
-    this.load.image('seleccion', 'assets/jgb/Titulo.png');
+    this.load.image('bghomescene', 'assets/home1.png');
+    this.load.image('logo', 'assets/logo_TR.png');
+    this.load.image('seleccion', 'assets/Titulo.png');
 
-    this.load.image('nombres', 'assets/jgb/nombres.png');
-    this.load.spritesheet('niñosprite', 'assets/jgb/spriteNiño.png', { frameWidth: 230, frameHeight: 230 });
-    this.load.spritesheet('niñasprite', 'assets/jgb/spriteNiña.png', { frameWidth: 225, frameHeight: 230 });
-    this.load.spritesheet('comenzarsprite', 'assets/jgb/btnSiguiente.png', { frameWidth: 364, frameHeight: 94 });
+    this.load.image('nombres', 'assets/nombres.png');
+    this.load.spritesheet('ninosprite', 'assets/spriteNino.png', { frameWidth: 213, frameHeight: 210 });
+    this.load.spritesheet('ninasprite', 'assets/spriteNina.png', { frameWidth: 213, frameHeight: 210 });
+    this.load.spritesheet('comenzarsprite', 'assets/btnSiguiente.png', { frameWidth: 364, frameHeight: 94 });
   }
 
   create(){
@@ -26,28 +26,35 @@ class Homescene extends Phaser.Scene {
     this.background = this.add.image(270, 380, 'bghomescene');
     this.logo = this.add.image(270, 105, 'logo');
     this.seleccion = this.add.image(270, 240, 'seleccion');
-    this.niño = this.add.sprite(164, 385, 'niñosprite').setInteractive();
-    this.niña = this.add.sprite(370, 385, 'niñasprite').setInteractive();
+    this.nino = this.add.sprite(164, 385, 'ninosprite').setInteractive();
+    this.nino.setFrame(1);
+    this.nina = this.add.sprite(370, 385, 'ninasprite').setInteractive();
     this.comenzarBtn = this.add.sprite(270, 640, 'comenzarsprite').setInteractive();
     this.nombres = this.add.image(270, 550, "nombres");
 
     let personaje = 1;
 
-    this.niño.on('pointerover', () => {
-      // this.niño.setFrame(1);
+    this.nino.on('pointerover', () => {
+      // this.nino.setFrame(1);
     }).on('pointerout', () => {
-        // this.niño.setFrame(0);
+      if(this.nina.frame == 1){
+        this.nino.setFrame(0);
+      }
     }).on('pointerdown', () => {
-      // this.niño.setFrame(1);
+      this.nina.setFrame(0);
+      this.nino.setFrame(1);
       personaje = 1;
     })
 
-    this.niña.on('pointerover', () => {
-      // this.niña.setFrame(1);
+    this.nina.on('pointerover', () => {
+      // this.nina.setFrame(1);
     }).on('pointerout', () => {
-        // this.niña.setFrame(0);
+      if(this.nino.frame == 1){
+        this.nina.setFrame(0);
+      }
     }).on('pointerdown', () => {
-      // this.niña.setFrame(1);
+      this.nino.setFrame(0);
+      this.nina.setFrame(1);
       personaje = 2;
     })
     
@@ -57,12 +64,13 @@ class Homescene extends Phaser.Scene {
       // this.comenzarBtn.setFrame(0);
     }).on('pointerdown', () => {
       let variables = {
-        "path_dependiente": personaje == 1 ? 'assets/jgb/Sprites_boy.png' : 'assets/jgb/Sprites_gril.png',
-        "celebracion": personaje == 1 ? 'assets/jgb/celebracion_niño.png' : 'assets/jgb/celebracion_niña.png',
-        "perdiste": personaje == 1 ? 'assets/jgb/boy_sad_body.png' : 'assets/jgb/girl_sad_body.png',
-        "happy": personaje == 1 ? 'assets/jgb/boy_happy.png' : 'assets/jgb/girl_happy.png',
-        "sad": personaje == 1 ? 'assets/jgb/boy_sad.png' : 'assets/jgb/girl_sad.png',
-        "personajeDemo": personaje == 1 ? 'assets/jgb/sprite_boy_milk1.png' : 'assets/jgb/sprite_girl_milk1.png',
+        // "path_dependiente": personaje == 1 ? 'assets/Sprites_boy.png' : 'assets/Sprites_gril.png',
+        "path_dependiente": personaje == 1 ? 'assets/Sprites_boy1.png' : 'assets/Sprites_gril.png',
+        "celebracion": personaje == 1 ? 'assets/celebracion_nino.png' : 'assets/celebracion_nina.png',
+        "perdiste": personaje == 1 ? 'assets/boy_sad_body.png' : 'assets/girl_sad_body.png',
+        "happy": personaje == 1 ? 'assets/boy_happy.png' : 'assets/girl_happy.png',
+        "sad": personaje == 1 ? 'assets/boy_sad.png' : 'assets/girl_sad.png',
+        "personajeDemo": personaje == 1 ? 'assets/sprite_boy_milk1.png' : 'assets/sprite_girl_milk1.png',
         "comenzar": true,
         "time": this.time,
         "nivel": this.nivel,

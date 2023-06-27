@@ -15,6 +15,9 @@ export class Publicidad2 {
         this.relatedScene.respuesta1.visible = false;
         this.relatedScene.respuesta2.visible = false;
         this.relatedScene.respuesta3.visible = false;
+        this.relatedScene.opcionA.visible = false;
+        this.relatedScene.opcionB.visible = false;
+        this.relatedScene.opcionC.visible = false;
         this.relatedScene.publicidadAudio.play();
 
         setTimeout(() => {
@@ -25,6 +28,11 @@ export class Publicidad2 {
             this.relatedScene.respuesta1.visible = true;
             this.relatedScene.respuesta2.visible = true;
             this.relatedScene.respuesta3.visible = true;
+            this.relatedScene.opcionA.visible = true;
+            this.relatedScene.opcionB.visible = true;
+            if (this.relatedScene.item.respuesta.tres) {
+                this.relatedScene.opcionC.visible = true;
+            }
 
             this.relatedScene.publicidadAudio.pause();
             this.personaje.visible = false;

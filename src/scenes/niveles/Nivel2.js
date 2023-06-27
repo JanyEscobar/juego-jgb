@@ -10,7 +10,7 @@ export class Nivel2 extends Phase {
         this.pills = this.relatedScene.physics.add.group({
             defaultKey: 'pill1'
         });
-        this.relatedScene.nombreMundo.setText('Mundo Fresa');
+        this.relatedScene.nombreMundo.setText('Mundo Minerales');
         this.configureColisions();
 
         this.relatedScene.cuenta = this.relatedScene.physics.add.sprite(280, 350, 'cuenta').setDepth(1);
@@ -18,7 +18,7 @@ export class Nivel2 extends Phase {
         this.relatedScene.anims.create({
             key: 'tiempo',
             frames: this.relatedScene.anims.generateFrameNumbers('cuenta', { start: 0, end: 3 }),
-            duration: 4000
+            duration: 7000
         });
 
         this.relatedScene.cuenta.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function() {

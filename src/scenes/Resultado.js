@@ -15,23 +15,25 @@ class Resultado extends Phaser.Scene {
     }
   
     preload(){
-        this.load.image('bgResultado', 'assets/jgb/home.png');
-        this.load.image('tablero', 'assets/jgb/tablero.png');
-        this.load.image('tablero1', 'assets/jgb/tablero1.png');
-        this.load.image('texto', 'assets/jgb/sigiente_nivel_texto.png');
-        this.load.image('ganaste', 'assets/jgb/ganaste.png');
-        this.load.image('perdiste', 'assets/jgb/mensaje_sin_vidas.png');
-        this.load.image('noTeRindas', 'assets/jgb/no_te_rindas.png');
+        this.load.image('bgResultado', 'assets/home.png');
+        this.load.image('tablero', 'assets/tablero.png');
+        this.load.image('tablero1', 'assets/tablero1.png');
+        this.load.image('texto', 'assets/sigiente_nivel_texto.png');
+        this.load.image('ganaste', 'assets/ganaste.png');
+        this.load.image('perdiste', 'assets/mensaje_sin_vidas.png');
+        this.load.image('noTeRindas', 'assets/no_te_rindas.png');
         this.load.image('imagen', this.imagen);
     
-        this.load.spritesheet('btnScore', 'assets/jgb/btnScore.png', { frameWidth: 364, frameHeight: 90 });
-        this.load.spritesheet('btnReintentar', 'assets/jgb/btnReintentar.png', { frameWidth: 364, frameHeight: 94 });
+        this.load.spritesheet('btnScore', 'assets/btnScore.png', { frameWidth: 364, frameHeight: 90 });
+        this.load.spritesheet('btnReintentar', 'assets/btnReintentar.png', { frameWidth: 364, frameHeight: 94 });
     }
   
     async create(){
         this.background = this.add.image(270, 380, 'bgResultado');
         this.tablero = this.add.image(270, 370, 'tablero');
+        this.scene.pause();
         this.actualizarNivel();
+        this.scene.resume('Resultado');
         if (this.accion) {
             this.ganaste = this.add.image(270, 300, 'ganaste');
             let totalPuntos = await this.mostrarPuntos();
@@ -44,11 +46,9 @@ class Resultado extends Phaser.Scene {
                 // this.btnScore.setFrame(0);
             }).on('pointerdown', () => {
                 this.imagen.destroy();
-                this.actualizarNivel();
                 this.scene.start("Score");
             });
         } else {
-            this.actualizarNivel();
             this.tablero.setTexture('tablero1', 0);
             this.perdiste = this.add.image(270, 260, 'perdiste');
             this.noTeRindas = this.add.image(270, 340, 'noTeRindas');
