@@ -35,6 +35,7 @@ export class Niveles {
     create() {
         let CurrenPhaseClass = this.niveles.pop();
         this.currentPhase = new CurrenPhaseClass(this.relatedScene);
+        this.relatedScene.proteccion = false;
         return this.currentPhase.create();
     }
 
@@ -55,9 +56,16 @@ export class Niveles {
                     cantidadSprite = 8;
                 }
                 var pill = this.currentPhase.pills.get(p, -68).setCircle(2, 0, 120);
-                pill.answer = this.getRandomInt(1, cantidadSprite);
-                // pill.setFrame(pill.answer - 1);
-                pill.setFrame(3);
+                let frame = this.getRandomInt(1, cantidadSprite);
+                if (this.relatedScene.proteccion) {
+                    while (frame == 7) {
+                        frame = this.getRandomInt(1, cantidadSprite);
+                    }
+                }
+                pill.answer = frame;
+                pill.setFrame(pill.answer - 1);
+                // pill.answer = 5;
+                // pill.setFrame(4);
             }
         }
     }
@@ -77,7 +85,7 @@ export class Niveles {
     update() {
         if (this.currentPhase.pills) {
             this.currentPhase.pills.getChildren().forEach(item => {
-                if (item.y > 600) {
+                if (item.y > 740) {
                     item.destroy();
                 }
             });

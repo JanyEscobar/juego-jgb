@@ -23,16 +23,19 @@ class Homescene extends Phaser.Scene {
   create(){
     this.time = 0;
 
-    this.background = this.add.image(270, 380, 'bghomescene');
-    this.logo = this.add.image(270, 105, 'logo');
-    this.seleccion = this.add.image(270, 240, 'seleccion');
-    this.nino = this.add.sprite(164, 385, 'ninosprite').setInteractive();
-    this.nino.setFrame(1);
-    this.nina = this.add.sprite(370, 385, 'ninasprite').setInteractive();
-    this.comenzarBtn = this.add.sprite(270, 640, 'comenzarsprite').setInteractive();
-    this.nombres = this.add.image(270, 550, "nombres");
+    this.background = this.add.image(270, 500, 'bghomescene');
+    // this.background.setScale(1, 1.25);
+    this.background.setScale(1, this.game.scale.height * 0.0014);
+    this.logo = this.add.image(270, 150, 'logo');
+    this.logo.setScale(2, 2);
+    this.seleccion = this.add.image(270, 360, 'seleccion');
+    this.nino = this.add.sprite(164, 530, 'ninosprite').setInteractive();
+    // this.nino.setFrame(1);
+    this.nina = this.add.sprite(370, 530, 'ninasprite').setInteractive();
+    this.comenzarBtn = this.add.sprite(270, 760, 'comenzarsprite').setInteractive();
+    this.nombres = this.add.image(270, 680, "nombres");
 
-    let personaje = 1;
+    let personaje = 0;
 
     this.nino.on('pointerover', () => {
       // this.nino.setFrame(1);
@@ -63,24 +66,27 @@ class Homescene extends Phaser.Scene {
     }).on('pointerout', () => {
       // this.comenzarBtn.setFrame(0);
     }).on('pointerdown', () => {
-      let variables = {
-        // "path_dependiente": personaje == 1 ? 'assets/Sprites_boy.png' : 'assets/Sprites_gril.png',
-        "path_dependiente": personaje == 1 ? 'assets/Sprites_boy1.png' : 'assets/Sprites_gril.png',
-        "celebracion": personaje == 1 ? 'assets/celebracion_nino.png' : 'assets/celebracion_nina.png',
-        "perdiste": personaje == 1 ? 'assets/boy_sad_body.png' : 'assets/girl_sad_body.png',
-        "happy": personaje == 1 ? 'assets/boy_happy.png' : 'assets/girl_happy.png',
-        "sad": personaje == 1 ? 'assets/boy_sad.png' : 'assets/girl_sad.png',
-        "personajeDemo": personaje == 1 ? 'assets/sprite_boy_milk1.png' : 'assets/sprite_girl_milk1.png',
-        "comenzar": true,
-        "time": this.time,
-        "nivel": this.nivel,
-        "id": this.id,
-        "personaje": personaje,
-      };
-      if (!this.demo) {
-        this.scene.start("Demo", variables);
+      if (personaje) {
+        let variables = {
+          "path_dependiente": personaje == 1 ? 'assets/Sprites_boy.png' : 'assets/Sprites_gril.png',
+          "celebracion": personaje == 1 ? 'assets/celebracion_nino.png' : 'assets/celebracion_nina.png',
+          "perdiste": personaje == 1 ? 'assets/boy_sad_body.png' : 'assets/girl_sad_body.png',
+          "happy": personaje == 1 ? 'assets/boy_happy.png' : 'assets/girl_happy.png',
+          "sad": personaje == 1 ? 'assets/boy_sad.png' : 'assets/girl_sad.png',
+          "personajeDemo": personaje == 1 ? 'assets/sprite_boy_milk1.png' : 'assets/sprite_girl_milk1.png',
+          "comenzar": true,
+          "time": this.time,
+          "nivel": this.nivel,
+          "id": this.id,
+          "personaje": personaje,
+        };
+        if (!this.demo) {
+          this.scene.start("Demo", variables);
+        } else {
+          this.scene.start("Game", variables);
+        }
       } else {
-        this.scene.start("Game", variables);
+        alert('Por favor seleccione un personaje');
       }
     });
   }

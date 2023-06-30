@@ -6,7 +6,6 @@ import Resultado from './scenes/Resultado.js';
 import Demo from './scenes/Demo.js';
 import Game from './scenes/game.js';
 import Score from './scenes/Score.js';
-import Prueba from './scenes/Prueba.js';
 
 const config = {
   title: 'Juego-JGB',
@@ -17,7 +16,9 @@ const config = {
 
   type: Phaser.AUTO,
   width: 540,
-  height: 780,
+  height: 980,
+  // width: 540,
+  // height: 1100,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH

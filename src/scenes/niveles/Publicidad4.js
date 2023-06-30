@@ -4,8 +4,8 @@ export class Publicidad4 {
     }
 
     create() {
-        this.relatedScene.video3.play();
-        this.relatedScene.video3.visible = true;
+        this.relatedScene.video4.play();
+        this.relatedScene.video4.visible = true;
         
         this.relatedScene.player.visible = false;
         this.relatedScene.ground.visible = false;
@@ -32,10 +32,10 @@ export class Publicidad4 {
                 this.relatedScene.opcionC.visible = true;
             }
 
-            this.relatedScene.video3.stop();
-            this.relatedScene.video3.visible = false;
+            this.relatedScene.video4.stop();
+            this.relatedScene.video4.visible = false;
 
             this.relatedScene.niveles.nextLevel(false);
-        }, 8000);
+        }, 10000);
     }
 }

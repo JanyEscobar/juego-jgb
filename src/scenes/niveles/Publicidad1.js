@@ -36,6 +36,6 @@ export class Publicidad1 {
             this.relatedScene.video1.visible = false;
 
             this.relatedScene.niveles.nextLevel(false);
-        }, 16000);
+        }, 15000);
     }
 }

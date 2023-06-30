@@ -31,13 +31,39 @@ export class Vidas {
             key: 'vidas',
             frameQuantity: cantidad,
             gridAlign: {
-              width: cantidad,
-              height: 1,
-              cellWidth: displacement,
-              cellHeight: 30,
-              x: firstPosition,
-              y: 4
+                width: cantidad,
+                height: 1,
+                cellWidth: displacement,
+                cellHeight: 30,
+                x: firstPosition,
+                y: 4
             }
-          }).setDepth(1);
+        }).setDepth(1);
+
+        this.agregarNombreVida();
+    }
+
+    agregarNombreVida(eliminar = false){
+        if (eliminar) {
+            this.eliminarNombreVida();
+        }
+        let cantidadVidas = this.vidasActuales.countActive();
+        // Asigna texto a cada elemento del grupo
+        this.vidasActuales.getChildren().forEach(function(element, index) {
+            if (element.active) {
+                element.texto = this.add.text(element.x - 10, element.y - 10, `B${cantidadVidas}`, { fontFamily: 'Arial', fontSize: '16px', color: "#FFFFFF", fontStyle: 'normal' }).setDepth(10);
+                cantidadVidas--;
+            }
+        }, this.relatedScene);
+    }
+
+    eliminarNombreVida(){
+        // Eliminar texto a cada elemento del grupo
+        this.vidasActuales.getChildren().forEach(function(element, index) {
+            if (element.texto) {
+                element.texto.destroy();
+                delete element.texto;
+            }
+        }, this.relatedScene);
     }
 }

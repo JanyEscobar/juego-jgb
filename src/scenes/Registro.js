@@ -38,10 +38,12 @@ class Registro extends Phaser.Scene {
         let auth = getAuth();
         let db = getFirestore(app);
     
-        this.background = this.add.image(270, 380, 'bgRegistro');
-        this.btnEntrar = this.add.sprite(270, 560, 'btnEntrar').setInteractive();
-        this.powered = this.add.sprite(270, 763, 'powered').setInteractive();
-        let inputNombre = this.add.rexInputText(240, 170, 300, 52, {
+        this.background = this.add.image(270, 500, 'bgRegistro');
+        this.background.setScale(1, 1.25);
+      //  this.background.setScale(1, this.game.scale.height * 0.0014);
+        this.btnEntrar = this.add.sprite(270, 660, 'btnEntrar').setInteractive();
+        this.powered = this.add.sprite(270, 1084, 'powered').setInteractive();
+        let inputNombre = this.add.rexInputText(240, 270, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
@@ -50,7 +52,7 @@ class Registro extends Phaser.Scene {
             id: 'inputNombre',
             text: this.nombre,
         });
-        let inputEmail = this.add.rexInputText(240, 240, 300, 52, {
+        let inputEmail = this.add.rexInputText(240, 340, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
@@ -60,7 +62,7 @@ class Registro extends Phaser.Scene {
             text: this.email ? this.email : '',
         });
         if (!this.email) {
-            let inputClave = this.add.rexInputText(240, 310, 300, 52, {
+            let inputClave = this.add.rexInputText(240, 410, 300, 52, {
                 backgroundColor: '#FFFFFF',
                 color: '#000000',
                 fontFamily: 'Arial',
@@ -70,7 +72,7 @@ class Registro extends Phaser.Scene {
                 id: 'inputClave',
             });
         }
-        let inputDogeria = this.add.rexInputText(240, !this.email ? 380 : 310, 300, 52, {
+        let inputDogeria = this.add.rexInputText(240, !this.email ? 480 : 410, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
@@ -93,22 +95,23 @@ class Registro extends Phaser.Scene {
         selectElement.add(option3);
         selectElement.add(option4);
         selectElement.id = 'selectRol';
-        this.add.dom(240, !this.email ? 450 : 380, selectElement).setOrigin(0.5);
+        this.add.dom(240, !this.email ? 550 : 580, selectElement).setOrigin(0.5);
         
         this.btnEntrar.on('pointerdown', () => {      
             let email = $('#inputEmail').val();
             let clave = $('#inputClave').val();
             let nombre = $('#inputNombre').val();
             let rol = $('#selectRol').val();
-            if (email && nombre && rol) {
+            let drogeria = $('#inputDogeria').val();
+            if (email && nombre && rol && drogeria) {
                 if (!this.email) {
                     if (clave) {
                         this.registro(auth, email, clave, nombre, rol, db);
                     } else {
-                        alert('Por favor ingrese su contraseña');
+                        alert('Por favor ingrese su contrase単a');
                     }
                 }
-                this.crearUsuario(db, nombre, email, rol);
+                this.crearUsuario(db, nombre, email, rol, drogeria);
             } else {
                 let textoValidacion = '';
                 if (!email) {
@@ -119,6 +122,9 @@ class Registro extends Phaser.Scene {
                 }
                 if (!rol) {
                     textoValidacion = textoValidacion + 'Por favor ingrese su rol.';
+                }
+                if (!drogeria) {
+                    textoValidacion = textoValidacion + 'Por favor ingrese la drogeria.';
                 }
                 alert(textoValidacion);
             }
@@ -151,7 +157,7 @@ class Registro extends Phaser.Scene {
           });
     }
 
-    async crearUsuario(db, nombre, email, rol) {
+    async crearUsuario(db, nombre, email, rol, drogeria) {
         try {
             let info = await this.consultarUsuario(db, email);
             if (!info['id']) {
@@ -160,7 +166,7 @@ class Registro extends Phaser.Scene {
                   nombre: nombre,
                   email: email,
                   rol: rol,
-                  drogeria: '',
+                  drogeria: drogeria,
                   nivel: 1,
                   puntos: 0,
                   demo: false,

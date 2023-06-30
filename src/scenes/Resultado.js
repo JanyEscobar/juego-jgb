@@ -29,17 +29,19 @@ class Resultado extends Phaser.Scene {
     }
   
     async create(){
-        this.background = this.add.image(270, 380, 'bgResultado');
-        this.tablero = this.add.image(270, 370, 'tablero');
+        this.background = this.add.image(270, 500, 'bgResultado');
+        this.background.setScale(1, 1.25);
+      //  this.background.setScale(1, this.game.scale.height * 0.0014);
+        this.tablero = this.add.image(270, 490, 'tablero');
         this.scene.pause();
         this.actualizarNivel();
         this.scene.resume('Resultado');
         if (this.accion) {
-            this.ganaste = this.add.image(270, 300, 'ganaste');
+            this.ganaste = this.add.image(270, 435, 'ganaste');
             let totalPuntos = await this.mostrarPuntos();
-            this.mensaje = this.add.text(150, 348, "Total puntos "+totalPuntos, { fontFamily: 'Arial Black', fontSize: '28px', fontStyle: 'normal', color: '#B70E0C' }).setDepth(1);
-            this.imagen = this.add.image(270, 530, 'imagen');
-            this.btnScore = this.add.sprite(270, 730, 'btnScore').setInteractive();
+            this.mensaje = this.add.text(150, 468, "Total puntos "+totalPuntos, { fontFamily: 'Arial Black', fontSize: '28px', fontStyle: 'normal', color: '#B70E0C' }).setDepth(1);
+            this.imagen = this.add.image(270, 650, 'imagen');
+            this.btnScore = this.add.sprite(270, 850, 'btnScore').setInteractive();
             this.btnScore.on('pointerover', () => {
                 // this.btnScore.setFrame(1);
             }).on('pointerout', () => {
@@ -50,10 +52,10 @@ class Resultado extends Phaser.Scene {
             });
         } else {
             this.tablero.setTexture('tablero1', 0);
-            this.perdiste = this.add.image(270, 260, 'perdiste');
-            this.noTeRindas = this.add.image(270, 340, 'noTeRindas');
-            this.imagen = this.add.image(270, 530, 'imagen');
-            this.btnReintentar = this.add.sprite(270, 730, 'btnReintentar').setInteractive();
+            this.perdiste = this.add.image(270, 390, 'perdiste');
+            this.noTeRindas = this.add.image(270, 460, 'noTeRindas');
+            this.imagen = this.add.image(270, 650, 'imagen');
+            this.btnReintentar = this.add.sprite(270, 880, 'btnReintentar').setInteractive();
             this.btnReintentar.on('pointerover', () => {
                 // this.btnReintentar.setFrame(1);
             }).on('pointerout', () => {

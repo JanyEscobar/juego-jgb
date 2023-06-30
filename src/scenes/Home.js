@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getAuth, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider, OAuthProvider } from "../../node_modules/firebase/firebase-auth.js";
+import { getAuth, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider, OAuthProvider, onAuthStateChanged } from "../../node_modules/firebase/firebase-auth.js";
 import { getFirestore, collection, query, where, getDocs } from "../../node_modules/firebase/firebase-firestore.js";
 
 const provider = new GoogleAuthProvider();
@@ -9,12 +9,18 @@ class Home extends Phaser.Scene {
     constructor(){
       super("Home");
     }
-  
+
     preload(){
-        this.load.image('bghome', 'assets/inicio1.png');
+        this.load.image('bghome', 'assets/home1.png');
+        this.load.image('vector', 'assets/vector.png');
+        this.load.image('logo', 'assets/logo_TR.png');
+        this.load.image('bienvenida', 'assets/bienvenidos.png');
+        this.load.image('iniciarSesion', 'assets/iniciar_sesion.png');
+        this.load.image('registrate', 'assets/registrate.png');
         this.load.image('google', 'assets/google.png');
         this.load.image('outlook', 'assets/outlook.png');
         this.load.image('btnRegistrarse', 'assets/btnRegistrar.png');
+        this.load.image('powered', 'assets/powered.png');
 
         this.load.spritesheet('btnEntrar', 'assets/btnEntrada.png', { frameWidth: 364, frameHeight: 94 });
     }
@@ -32,9 +38,20 @@ class Home extends Phaser.Scene {
         let app = initializeApp(firebaseConfig);
         let auth = getAuth();
         let db = getFirestore(app);
+
+        this.validarAutenticacion(auth, db);
         
-        this.background = this.add.image(270, 380, 'bghome');
-        let inputEmail = this.add.rexInputText(250, 500, 300, 52, {
+        this.background = this.add.image(270, 500, 'bghome');
+        this.background.setScale(1, 1.25);
+      //  this.background.setScale(1, this.game.scale.height * 0.0014);
+        this.logo = this.add.image(270, 150, 'logo');
+        this.logo.setScale(2, 2);
+        this.bienvenida = this.add.image(270, 330, 'bienvenida');
+        this.iniciarSesion = this.add.image(270, 370, 'iniciarSesion');
+        this.vector = this.add.image(278, 490, 'vector');
+        this.registrate = this.add.image(270, 430, 'registrate');
+        this.powered = this.add.image(270, 1084, 'powered');
+        let inputEmail = this.add.rexInputText(250, 640, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
@@ -42,7 +59,7 @@ class Home extends Phaser.Scene {
             placeholder: 'Usuario',
             id: 'inputEmail',
         });
-        let inputClave = this.add.rexInputText(250, 570, 300, 52, {
+        let inputClave = this.add.rexInputText(250, 710, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
@@ -52,10 +69,10 @@ class Home extends Phaser.Scene {
             id: 'inputClave',
         });
          
-        this.btnEntrar = this.add.sprite(270, 680, 'btnEntrar').setDepth(1).setInteractive();
-        this.btnRegistrarse = this.add.image(450, 400, 'btnRegistrarse').setDepth(1).setInteractive();
-        this.btnGoogle = this.add.image(200, 380, 'google').setInteractive();
-        this.btnOutlook = this.add.image(200, 430, 'outlook').setInteractive();
+        this.btnEntrar = this.add.sprite(270, 820, 'btnEntrar').setDepth(1).setInteractive();
+        this.btnRegistrarse = this.add.image(450, 490, 'btnRegistrarse').setDepth(1).setInteractive();
+        this.btnGoogle = this.add.image(200, 475, 'google').setInteractive();
+        this.btnOutlook = this.add.image(200, 520, 'outlook').setInteractive();
         
         this.btnGoogle.on('pointerdown', () => {
             this.loginGoogle(auth, provider, db);
@@ -80,7 +97,7 @@ class Home extends Phaser.Scene {
                     textoValidacion = textoValidacion + 'Por favor ingrese su usuario.\n';
                 }
                 if (!clave) {
-                    textoValidacion = textoValidacion + 'Por favor ingrese su contraseña.';
+                    textoValidacion = textoValidacion + 'Por favor ingrese su contrase単a.';
                 }
                 alert(textoValidacion);
             }
@@ -177,6 +194,23 @@ class Home extends Phaser.Scene {
             info['id'] = doc.id;
         });
         return info;
+    }
+
+    validarAutenticacion(auth, db){
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log(user);
+                this.consultarUsuario(db, user.email).then((info) => {
+                    if (info['id']) {
+                        this.scene.start("Homescene", {
+                            demo: info['demo'],
+                            nivel: info['nivel'],
+                            id: info['id'],
+                        });
+                    }
+                });
+            }
+          });
     }
   }
   

@@ -20,10 +20,6 @@ class Game extends Phaser.Scene {
         this.sad = data.sad;
         this.comenzar = data.comenzar;
         this.personaje = data.personaje;
-        this.scene.pause();
-        this.nivel = await this.nivelActual();
-        console.log(this.nivel);
-        this.scene.resume('Game');
         window.config = config;
     }
 
@@ -52,7 +48,7 @@ class Game extends Phaser.Scene {
         this.load.image('balloon', 'assets/balloon.png');
         this.load.image('ground2', 'assets/group1.png');
         this.load.image('balloon2', 'assets/balloon1.png');
-        this.load.image('vidas', 'assets/vitaminas1.png');
+        this.load.image('vidas', 'assets/vitaminas.png');
         this.load.image('cuadroMensajes', 'assets/mensaje_incorrecto.png');
         this.load.image('siguienteNivel', 'assets/sigiente_nivel_texto.png');
         this.load.image('tablero', 'assets/tablero.png');
@@ -62,8 +58,7 @@ class Game extends Phaser.Scene {
         
         this.load.spritesheet('btnSiguiente', 'assets/btnSiguiente.png', { frameWidth: 364, frameHeight: 94 });
         this.load.spritesheet('cuenta', 'assets/cuenta.png', { frameWidth: 175, frameHeight: 132 });
-        // this.load.spritesheet('dependientesprite', this.path_dependiente, { frameWidth: 128, frameHeight: 129 });
-        this.load.spritesheet('dependientesprite', this.path_dependiente, { frameWidth: 140, frameHeight: 125 });
+        this.load.spritesheet('dependientesprite', this.path_dependiente, { frameWidth: 128, frameHeight: 129 });
         this.load.spritesheet('pill', 'assets/objetos.png', { frameWidth: 75.3, frameHeight: 196 });
         this.load.spritesheet('pill1', 'assets/objetos1.png', { frameWidth: 78.2, frameHeight: 185 });
         this.load.spritesheet('pill2', 'assets/objetos2.png', { frameWidth: 79, frameHeight: 185 });
@@ -72,14 +67,17 @@ class Game extends Phaser.Scene {
         
         this.load.audio('bg_audio', ['assets/latin1.mp3']);
         this.load.audio('swallow', ['assets/swallow.mp3']);
-        this.load.audio('audioPublicidad1', ['assets/tarrito_rojo.mp3']);
 
-        this.load.video('videoPublicidad1', ['assets/tarrito_rojo.mp4']);
-        this.load.video('videoPublicidad2', ['assets/tarrito_rojo1.mp4']);
-        this.load.video('videoPublicidad3', ['assets/tarrito_rojo2.mp4']);
+        this.load.video('videoPublicidad1', ['assets/publicidad1.mp4']);
+        this.load.video('videoPublicidad2', ['assets/publicidad2.mp4']);
+        this.load.video('videoPublicidad3', ['assets/publicidad3.mp4']);
+        this.load.video('videoPublicidad4', ['assets/publicidad4.mp4']);
     }
 
-    create() {
+    async create() {
+        this.scene.pause();
+        this.nivel = await this.nivelActual();
+        this.scene.resume('Game');
         this.niveles = new Niveles(this, this.nivel);
         this.vidas = new Vidas(this, this.cantidadVidas);
         this.mode = 1;
@@ -87,27 +85,33 @@ class Game extends Phaser.Scene {
         this.score = 0;
         this.pillCollition = false;
         this.sideCollition = 1;
-        this.question_id = 1;
+        this.question_id = this.nivel;
         this.answer;
         this.correctAnswer = 0;
         this.loSabias = '';
+        this.proteccion = false;
+        this.permitirMoverse = true;
 
         this.bg_audio = this.sound.add('bg_audio', { loop: true });
         this.bg_audio.play();
-        this.publicidadAudio = this.sound.add('audioPublicidad1', { loop: false });
         this.swallow = this.sound.add('swallow', { loop: false });
 
-        this.video1 = this.add.video(270, 400, 'videoPublicidad1').setScale(0.8).setDepth(2);
+        this.video1 = this.add.video(270, 500, 'videoPublicidad1').setScale(0.8).setDepth(2);
         this.video1.visible = false;
         this.video1.stop();
-        this.video2 = this.add.video(270, 400, 'videoPublicidad2').setScale(0.8).setDepth(2);
+        this.video2 = this.add.video(270, 500, 'videoPublicidad2').setScale(0.8).setDepth(2);
         this.video2.visible = false;
         this.video2.stop();
-        this.video3 = this.add.video(270, 400, 'videoPublicidad3').setScale(0.8).setDepth(2);
+        this.video3 = this.add.video(270, 500, 'videoPublicidad3').setScale(0.8).setDepth(2);
         this.video3.visible = false;
         this.video3.stop();
+        this.video4 = this.add.video(270, 500, 'videoPublicidad4').setScale(0.8).setDepth(2);
+        this.video4.visible = false;
+        this.video4.stop();
 
-        this.background = this.add.image(270, 380, 'background');
+        this.background = this.add.image(270, 500, 'background');
+        this.background.setScale(1, 1.25);
+      //  this.background.setScale(1, this.game.scale.height * 0.0014);
         this.nombreBackground = 'background';
         
         if (this.contenido) {
@@ -120,27 +124,27 @@ class Game extends Phaser.Scene {
         this.player.setCollideWorldBounds(true);
         
         this.nombreMundo = this.add.text(15, 15, "Mundo Tradicional", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
-        this.ground = this.physics.add.image(270, 730, 'ground').setDepth(1);
+        this.palabraVida = this.add.text(300, 10, "Vidas:", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
+        this.ground = this.physics.add.image(270, 900, 'ground').setDepth(1);
         this.ground.setCollideWorldBounds(true);
         this.ground.setImmovable(true);
-        this.opcionA = this.physics.add.image(60, 712, 'opcionA').setDepth(1);
+        this.opcionA = this.physics.add.image(60, 910, 'opcionA').setDepth(1);
         this.opcionA.setCollideWorldBounds(true);
         this.opcionA.setImmovable(true);
         this.opcionA.body.allowGravity = false;
-        this.opcionB = this.physics.add.image(230, 712, 'opcionB').setDepth(1);
+        this.opcionB = this.physics.add.image(230, 910, 'opcionB').setDepth(1);
         this.opcionB.setCollideWorldBounds(true);
         this.opcionB.setImmovable(true);
         this.opcionB.body.allowGravity = false;
-        this.opcionC = this.physics.add.image(390, 712, 'opcionC').setDepth(1);
+        this.opcionC = this.physics.add.image(390, 910, 'opcionC').setDepth(1);
         this.opcionC.setCollideWorldBounds(true);
         this.opcionC.setImmovable(true);
         this.opcionC.body.allowGravity = false;
         
-        this.pregunta = this.add.text(30, 620, "", { fontFamily: 'Arial Black', fontSize: '20px', fontStyle: 'normal', color: "#B70E0C", align: "center", fixedWidth: 490 }).setDepth(1);
-        this.respuesta1 = this.add.text(90, 700, "", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: "#B70E0C" }).setDepth(1);
-        this.respuesta2 = this.add.text(260, 700, "", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: "#B70E0C" }).setDepth(1);
-        this.respuesta3 = this.add.text(420, 700, "", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: "#B70E0C" }).setDepth(1);
-        
+        this.pregunta = this.add.text(30, 810, "", { fontFamily: 'Arial Black', fontSize: '20px', fontStyle: 'normal', color: "#B70E0C", align: "center", fixedWidth: 490 }).setDepth(1);
+        this.respuesta1 = this.add.text(90, 895, "", { fontFamily: 'Arial Black', fontSize: '22px', color: '#FFF', align: 'center', fontStyle: 'normal', fontWeight: '700', lineSpacing: 1.1, stroke: '#FF0000', strokeThickness: 4 }).setDepth(1);
+        this.respuesta2 = this.add.text(260, 895, "", { fontFamily: 'Arial Black', fontSize: '22px', color: '#FFF', align: 'center', fontStyle: 'normal', fontWeight: '700', lineSpacing: 1.1, stroke: '#FF0000', strokeThickness: 4 }).setDepth(1);
+        this.respuesta3 = this.add.text(420, 895, "", { fontFamily: 'Arial Black', fontSize: '22px', color: '#FFF', align: 'center', fontStyle: 'normal', fontWeight: '700', lineSpacing: 1.1, stroke: '#FF0000', strokeThickness: 4 }).setDepth(1);
         this.load_questions();
         
         this.animatePlayer();
@@ -159,10 +163,40 @@ class Game extends Phaser.Scene {
         // Evento para mover el sprite mientras se arrastra
         this.input.on('drag', function (pointer, gameObject, dragX) {
             if (dragX > gameObject.x) {
+                this.scene.pause();
+                if (this.permitirMoverse) {
+                    setTimeout(() => {
+                        this.permitirMoverse = false;
+                        this.player.setFrame(5);
+                    }, 200);
+                    setTimeout(() => {
+                        this.player.setFrame(6);
+                    }, 400);
+                    setTimeout(() => {
+                        this.player.setFrame(7);
+                        this.permitirMoverse = true;
+                    }, 600);
+                }
+                this.scene.resume('Game');
                 this.mostrarDerecha = true;
                 this.mostrarIzquierda = false;
             }
             if (dragX < gameObject.x) {
+                this.scene.pause();
+                if (this.permitirMoverse) {
+                    setTimeout(() => {
+                        this.permitirMoverse = false;
+                        this.player.setFrame(3);
+                    }, 200);
+                    setTimeout(() => {
+                        this.player.setFrame(2);
+                    }, 400);
+                    setTimeout(() => {
+                        this.player.setFrame(1);
+                        this.permitirMoverse = true;
+                    }, 600);
+                }
+                this.scene.resume('Game');
                 this.mostrarDerecha = false;
                 this.mostrarIzquierda = true;
             }
@@ -198,51 +232,69 @@ class Game extends Phaser.Scene {
                 if (this.answer == this.correctAnswer) {
                     this.player.anims.play('correct');
                 } else if (this.answer == 6) {
+                    // Accion de estrella de granolas
                     this.scene.resume('Game');
-                    // this.vidas.agregarVida();
                 } else if (this.answer == 7) {
+                    this.proteccion = true;
                     this.scene.resume('Game');
-                    // this.vidas.agregarVida();
                 } else if (this.answer == 8) {
-                    this.scene.resume('Game');
                     this.vidas.agregarVida();
-                } else {
-                    let muerteTotal = this.answer == 4;
-                    if (muerteTotal) {
-                        this.player.anims.play('explotar');
-                        // setTimeout(() => {
-                        //     this.player.setFrame(11);
-                        // }, 200);
-                        // setTimeout(() => {
-                        //     this.player.setFrame(12);
-                        // }, 300);
-                        // setTimeout(() => {
-                        //     this.player.setFrame(13);
-                        // }, 400);
-                        // setTimeout(() => {
-                        //     this.player.setFrame(14);
-                        // }, 500);
-                        // setTimeout(() => {
-                        //     this.player.setFrame(15);
-                        // }, 600);
-                    } else {
-                        this.player.anims.play('fail');
-                    }
-                    let sinVidas = this.vidas.accionVidas(muerteTotal);
+                    this.vidas.agregarNombreVida(true);
+                    this.scene.resume('Game');
+                } else if (this.answer == 5 && !this.proteccion) {
+                    this.player.anims.play('fail');
+                    let sinVidas = this.vidas.accionVidas();
                     if (sinVidas) {
                         setTimeout(() => {
                             this.results(false);
                         }, 900);
+                    } else {
+                        this.vidas.agregarNombreVida(true);
+                    }
+                    this.scene.resume('Game');
+                } else {
+                    if (!this.proteccion) {
+                        let muerteTotal = this.answer == 4;
+                        if (muerteTotal) {
+                            setTimeout(() => {
+                                this.player.setFrame(11);
+                            }, 200);
+                            setTimeout(() => {
+                                this.player.setFrame(12);
+                            }, 300);
+                            setTimeout(() => {
+                                this.player.setFrame(13);
+                            }, 400);
+                            setTimeout(() => {
+                                this.player.setFrame(14);
+                            }, 500);
+                            setTimeout(() => {
+                                this.player.setFrame(15);
+                            }, 600);
+                        } else {
+                            this.player.anims.play('fail');
+                        }
+                        let sinVidas = this.vidas.accionVidas(muerteTotal);
+                        if (sinVidas) {
+                            setTimeout(() => {
+                                this.results(false);
+                            }, 900);
+                        } else {
+                            // this.vidas.eliminarNombreVida();
+                            this.vidas.agregarNombreVida(true);
+                        }
+                    } else {
+                        this.scene.resume('Game');
                     }
                 }
             }, 300);
             setTimeout(() => {
-                if (this.mode == 1 && this.answer != 6) {
+                if (this.mode == 1 && (this.answer == 1 || this.answer == 2 || this.answer == 3)) {
                     if (this.answer == this.correctAnswer) {
                         this.right++;
                         this.actualizarPuntos();
                         this.next_question(1);
-                    } else if (this.answer != 6 && this.answer != 7 && this.answer != 8) {
+                    } else if ((this.answer == 1 || this.answer == 2 || this.answer == 3) && !this.proteccion) {
                         this.next_question(0);
                     }
                 }
@@ -256,20 +308,21 @@ class Game extends Phaser.Scene {
             this.player.setVelocityX(220);
             this.player.setVelocityY(0);
             this.player.anims.play('right', true);
+        } else if (this.player && this.isDragging) {
         } else if (this.player) {
             this.player.setVelocityX(0);
             this.player.anims.play('turn')
         }
 
         // Verificar si se está arrastrando el sprite
-        if (this.player && this.isDragging) {
-            if (this.mostrarIzquierda) {
-                this.player.anims.play('left', true);
-            }
-            if (this.mostrarDerecha) {
-                this.player.anims.play('right', true);
-            }
-        }
+        // if (this.player && this.isDragging) {
+        //     if (this.mostrarIzquierda) {
+        //         this.player.anims.play('left', true);
+        //     }
+        //     if (this.mostrarDerecha) {
+        //         this.player.anims.play('right', true);
+        //     }
+        // }
 
         if (time > this.respawn && this.player.visible == true) {
             this.niveles.pillsFalling();
@@ -338,11 +391,12 @@ class Game extends Phaser.Scene {
         });
     }
 
-    next_question(valor) {
+    async next_question(valor) {
         this.niveles.getPill();
         this.actualizarNivel();
         this.scene.resume('Game');
         if (valor) {
+            console.log(this.question_id);
             if (this.question_id < 5) {
                 this.background.setTexture('home', 0);
                 this.player.visible = false;
@@ -360,11 +414,11 @@ class Game extends Phaser.Scene {
                     this.opcionA1.setVisible(false);
                     this.opcionB1.setVisible(false);
                 }
-                this.tablero = this.add.image(270, 370, 'tablero');
-                this.ganaste = this.add.image(270, 315, 'ganaste');
-                this.siguienteNivel = this.add.image(270, 400, 'siguienteNivel');
-                this.happy = this.add.image(270, 545, 'happy');
-                this.btnSiguiente = this.add.sprite(270, 730, 'btnSiguiente').setInteractive();
+                this.tablero = this.add.image(270, 490, 'tablero');
+                this.ganaste = this.add.image(270, 435, 'ganaste');
+                this.siguienteNivel = this.add.image(270, 520, 'siguienteNivel');
+                this.happy = this.add.image(270, 665, 'happy');
+                this.btnSiguiente = this.add.sprite(270, 850, 'btnSiguiente').setInteractive();
                 this.btnSiguiente.on('pointerover', () => {
                     // this.btnSiguiente.setFrame(1);
                 }).on('pointerout', () => {
@@ -385,9 +439,14 @@ class Game extends Phaser.Scene {
                     this.ganaste.visible = false;
                     this.siguienteNivel.visible = false;
                     this.happy.visible = false;
-                    this.load_questions();
-                    this.background.setTexture(this.nombreBackground, 0);
-                    this.niveles.nextLevel();
+                    if (this.question_id < 5) {
+                        this.load_questions();
+                        this.background.setTexture(this.nombreBackground, 0);
+                        this.niveles.nextLevel();
+                    } else {
+                        this.results();
+                    }
+                    
                     this.question_id++;
                 });
             } else {
@@ -409,10 +468,10 @@ class Game extends Phaser.Scene {
                 this.opcionA1.setVisible(false);
                 this.opcionB1.setVisible(false);
             }
-            this.cuadroMensajes = this.add.image(270, 380, 'cuadroMensajes');
-            this.contenido = this.add.text(20, 400, this.loSabias, { font: "bold 18px Verdana", color: "#00000", align: "center", fixedWidth: 490 }).setDepth(1);
-            this.imagenSad = this.add.image(270, 200, 'sad').setScale(0.7, 0.7);
-            this.btnSiguiente = this.add.sprite(270, 640, 'btnSiguiente').setInteractive();
+            this.cuadroMensajes = this.add.image(270, 500, 'cuadroMensajes');
+            this.contenido = this.add.text(20, 520, this.loSabias, { font: "bold 18px Verdana", color: "#00000", align: "center", fixedWidth: 490 }).setDepth(1);
+            this.imagenSad = this.add.image(270, 320, 'sad').setScale(0.7, 0.7);
+            this.btnSiguiente = this.add.sprite(270, 760, 'btnSiguiente').setInteractive();
             this.btnSiguiente.on('pointerover', () => {
                 // this.btnSiguiente.setFrame(1);
             }).on('pointerout', () => {
@@ -432,9 +491,13 @@ class Game extends Phaser.Scene {
                 this.contenido.visible = false;
                 this.btnSiguiente.visible = false;
                 this.imagenSad.visible = false;
-                this.load_questions();
-                this.background.setTexture(this.nombreBackground, 0);
-                this.niveles.nextLevel();
+                if (this.question_id < 5) {
+                    this.load_questions();
+                    this.background.setTexture(this.nombreBackground, 0);
+                    this.niveles.nextLevel();
+                } else {
+                    this.results();
+                }
                 this.question_id++;
             });
         }

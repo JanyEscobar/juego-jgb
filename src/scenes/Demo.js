@@ -27,13 +27,10 @@ class Demo extends Phaser.Scene {
         this.load.image('groundDemo', 'assets/group.png');
         this.load.image('balloonDemo', 'assets/balloon.png');
         this.load.image('tarritos', 'assets/tarritos.png');
-        this.load.image('flechaderecha', 'assets/flechaderecha.png');
-        this.load.image('flechaizquierda', 'assets/flechaizquierda.png');
         this.load.image('cuadro_mensaje', 'assets/cuadro_mensaje.png');
         this.load.image('personajeDemo', this.personajeDemo);
         this.load.spritesheet('pillDemo', 'assets/objetos.png', { frameWidth: 75.3, frameHeight: 196 });
-        // this.load.spritesheet('dependientespriteDemo', this.path_dependiente, { frameWidth: 128, frameHeight: 129 });
-        this.load.spritesheet('dependientespriteDemo', this.path_dependiente, { frameWidth: 140, frameHeight: 125 }); // 1
+        this.load.spritesheet('dependientespriteDemo', this.path_dependiente, { frameWidth: 128, frameHeight: 129 });
         this.load.spritesheet('cuenta', 'assets/cuenta.png', { frameWidth: 175, frameHeight: 132 });
         this.load.spritesheet('btnDemo', 'assets/btnDemo.png', { frameWidth: 364, frameHeight: 94 });
         this.load.spritesheet('btnGo', 'assets/btnGo.png', { frameWidth: 400, frameHeight: 160 });
@@ -49,9 +46,12 @@ class Demo extends Phaser.Scene {
         this.moverDerecha = false;
         this.comenzarTarritos = false;
         this.dejarDeMostrar = false;
+        this.permitirMoverse = true;
 
-        this.background = this.add.image(270, 380, 'backgroundDemo');
-        this.mundo = this.add.text(180, 15, "Mundo Tradicional", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
+        this.background = this.add.image(270, 500, 'backgroundDemo');
+        this.background.setScale(1, 1.25);
+      //  this.background.setScale(1, this.game.scale.height * 0.0014);
+        this.mundo = this.add.text(180, 15, "Demo", { fontFamily: 'Arial Black', fontSize: '220%', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
         this.cuenta = this.physics.add.sprite(270, 350, 'cuenta').setDepth(1);
         this.cuenta.body.allowGravity = false;
         this.anims.create({
@@ -61,31 +61,29 @@ class Demo extends Phaser.Scene {
         });
 
         this.cuenta.visible = false;
-        this.mensaje = this.add.image(270, 350, 'mensaje');
-        this.tarritos = this.add.image(280, 500, 'tarritos');
-        this.personajeDemo = this.add.image(240, 500, 'personajeDemo');
+        this.mensaje = this.add.image(270, 470, 'mensaje');
+        this.tarritos = this.add.image(280, 620, 'tarritos');
+        this.personajeDemo = this.add.image(240, 620, 'personajeDemo');
         
-        this.playerDemo = this.physics.add.sprite(250, 563, 'dependientespriteDemo').setInteractive();
+        this.playerDemo = this.physics.add.sprite(250, 683, 'dependientespriteDemo').setInteractive();
         this.playerDemo.setCollideWorldBounds(true);
         this.playerDemo.visible = false;
-        // this.playerDemo.setFrame(15);
 
         this.cuenta.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function() {
             this.playerDemo.visible = true;
             this.cuenta.visible = false;
-            // this.flechaDerecha = this.add.image(500, 500, 'flechaderecha');
         }, this);
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.balloonDemo = this.add.image(270, 85, 'balloonDemo').setDepth(1).setAlpha(0.95);
         this.balloonDemo.visible = false;
 
-        this.groundDemo = this.physics.add.image(270, 730, 'groundDemo').setDepth(1);
+        this.groundDemo = this.physics.add.image(270, 880, 'groundDemo').setDepth(1);
         this.groundDemo.setCollideWorldBounds(true);
         this.groundDemo.setImmovable(true);
         this.groundDemo.visible = false;
-        this.btnDemo = this.add.sprite(270, 640, 'btnDemo').setInteractive();
-        this.btnGo = this.add.sprite(270, 690, 'btnGo').setInteractive();
+        this.btnDemo = this.add.sprite(270, 760, 'btnDemo').setInteractive();
+        this.btnGo = this.add.sprite(270, 880, 'btnGo').setInteractive();
         this.btnGo.visible = false;
 
         this.animatePlayerDemo();
@@ -104,6 +102,22 @@ class Demo extends Phaser.Scene {
         // Evento para mover el sprite mientras se arrastra
         this.input.on('drag', function (pointer, gameObject, dragX) {
             if (dragX > gameObject.x) {
+                this.scene.pause();
+                if (this.permitirMoverse) {
+                    this.playerDemo.setFrame(5);
+                    setTimeout(() => {
+                        this.permitirMoverse = false;
+                        this.playerDemo.setFrame(5);
+                    }, 100);
+                    setTimeout(() => {
+                        this.playerDemo.setFrame(6);
+                    }, 400);
+                    setTimeout(() => {
+                        this.playerDemo.setFrame(7);
+                        this.permitirMoverse = true;
+                    }, 600);
+                }
+                this.scene.resume('Demo');
                 this.mostrarDerecha = true;
                 this.mostrarIzquierda = false;
                 if (!this.moverDerecha) {
@@ -112,6 +126,22 @@ class Demo extends Phaser.Scene {
                 }
             }
             if (dragX < gameObject.x) {
+                this.scene.pause();
+                if (this.permitirMoverse) {
+                    this.playerDemo.setFrame(3);
+                    setTimeout(() => {
+                        this.permitirMoverse = false;
+                        this.playerDemo.setFrame(3);
+                    }, 100);
+                    setTimeout(() => {
+                        this.playerDemo.setFrame(2);
+                    }, 400);
+                    setTimeout(() => {
+                        this.playerDemo.setFrame(1);
+                        this.permitirMoverse = true;
+                    }, 600);
+                }
+                this.scene.resume('Demo');
                 this.mostrarDerecha = false;
                 this.mostrarIzquierda = true;
                 if (!this.moverIzquierda) {
@@ -158,8 +188,8 @@ class Demo extends Phaser.Scene {
             this.personajeDemo.visible = false;
             this.tarritos.visible = false;
             this.mundo.x = 15;
-            this.mensajeDemo = this.add.text(550 * 0.13, 630, "Desliza el personaje a los lados y\n atrapa el tarrito.", { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
-            this.textoAccion = this.add.text(550 * 0.3, 710, 'Vamos a la derecha', { fontFamily: 'Arial Black', fontSize: '22px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
+            this.mensajeDemo = this.add.text(window.innerWidth > 700 ? 550 * 0.13 : 640 * 0.17, 820, "Desliza el personaje a los lados y\n atrapa el tarrito.", { fontFamily: 'Arial Black', fontSize: '220%', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
+            this.textoAccion = this.add.text(window.innerWidth > 700 ? 550 * 0.3 : 640 * 0.26, 890, 'Vamos a la derecha', { fontFamily: 'Arial Black', fontSize: '220%', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
             this.cuenta.visible = true;
             this.cuenta.anims.play('tiempo');
         });
@@ -199,29 +229,30 @@ class Demo extends Phaser.Scene {
 
     update(time, delta) {
         if (this.pillCollitionDemo) {
-            this.scene.pause();
             if (this.sideCollitionDemo) {
                 this.playerDemo.anims.play('eatFromRight');
             } else {
                 this.playerDemo.anims.play('eatFromLeft');
             }
-            this.scene.resume('Demo');
-
-            if (this.answerDemo == 3) {
-                this.groundDemo.destroy();
-                this.mensajeDemo.destroy();
-                this.textoAccion.destroy();
-                this.background.setTexture('background');
-                this.groundDemo = this.physics.add.image(270, 400, 'cuadro_mensaje').setDepth(1);
-                this.mensajeDemo = this.add.text(550 * 0.18, 360, "¡Muy bien! estas\n listo para empezar!", { fontFamily: 'Arial Black', fontSize: '30px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
-                this.groundDemo.body.allowGravity = false;
-                this.playerDemo.visible = false;
-                this.btnGo.visible = true;
-                this.pillsDemo.clear(true, true);
-            } else {
-                this.textoAccion.x = 550 * 0.25;
-                this.textoAccion.setText('Debes atrapar el tarrito\ncon la letra C');
-            }
+            this.scene.pause();
+            setTimeout(() => {
+                if (this.answerDemo == 3) {
+                    this.groundDemo.destroy();
+                    this.mensajeDemo.destroy();
+                    this.textoAccion.destroy();
+                    this.background.setTexture('background');
+                    this.groundDemo = this.physics.add.image(270, 450, 'cuadro_mensaje').setDepth(1);
+                    this.mensajeDemo = this.add.text(window.innerWidth > 700 ? 550 * 0.18 : 640 * 0.2, 410, "¡Muy bien! estas\n listo para empezar!", { fontFamily: 'Arial Black', fontSize: '30px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
+                    this.groundDemo.body.allowGravity = false;
+                    this.playerDemo.visible = false;
+                    this.btnGo.visible = true;
+                    this.pillsDemo.clear(true, true);
+                } else {
+                    this.textoAccion.x = window.innerWidth > 700 ? 550 * 0.25 : 640 * 0.25;
+                    this.textoAccion.setText('Debes atrapar el tarrito\ncon la letra C');
+                }
+                this.scene.resume('Demo');
+            }, 1000);
 
         } else if (this.cursors.left.isDown && this.moverDerecha) {
             this.playerDemo.setVelocityX(-220);
@@ -229,7 +260,6 @@ class Demo extends Phaser.Scene {
             this.playerDemo.anims.play('left', true);
             if (!this.moverIzquierda) {
                 this.moverIzquierda = true;
-                // this.flechaizquierda.destroy();
             }
         } else if (this.cursors.right.isDown) {
             this.playerDemo.setVelocityX(220);
@@ -237,32 +267,12 @@ class Demo extends Phaser.Scene {
             this.playerDemo.anims.play('right', true);
             if (!this.moverDerecha) {
                 this.moverDerecha = true;
-                // this.flechaDerecha.destroy();
                 this.textoAccion.setText('Vamos a la izquierda');
-                // this.scene.pause();
-                // if (!this.dejarDeMostrar) {
-                //     this.flechaizquierda = this.add.image(40, 500, 'flechaizquierda');
-                // }
-                // this.scene.resume('Demo');
             }
+        } else if (this.playerDemo && this.isDragging) {
         } else {
             this.playerDemo.setVelocityX(0);
             this.playerDemo.anims.play('turn')
-        }
-
-        // Verificar si se está arrastrando el sprite
-        if (this.playerDemo && this.isDragging) {
-            if (this.mostrarIzquierda) {
-                this.playerDemo.anims.play('left', true);
-                // this.flechaizquierda.destroy();
-            }
-            if (this.mostrarDerecha) {
-                this.playerDemo.anims.play('right', true);
-                // this.flechaDerecha.destroy();
-                // if (!this.dejarDeMostrar) {
-                //     this.flechaizquierda = this.add.image(40, 500, 'flechaizquierda');
-                // }
-            }
         }
 
         if (time > this.time && this.playerDemo.visible && this.moverIzquierda && this.moverDerecha && this.comenzarTarritos) {
@@ -271,16 +281,15 @@ class Demo extends Phaser.Scene {
         }
 
         this.pillsDemo.getChildren().forEach(item => {
-            if (item.y > 700) {
+            if (item.y > 740) {
                 item.destroy();
             }
         });
 
         if (this.playerDemo.visible && this.moverIzquierda && this.moverDerecha && !this.dejarDeMostrar) {
-            this.textoAccion.y = 650;
-            this.textoAccion.x = 550 * 0.18;
+            this.textoAccion.y = 850;
+            this.textoAccion.x = window.innerWidth > 700 ? 550 * 0.18 : 640 * 0.18;
             this.mensajeDemo.destroy();
-            // this.flechaizquierda.destroy();
             this.textoAccion.setText('Muy buen!\nAtrapa el tarrito con la letra C');
             this.comenzarTarritos = true;
             this.dejarDeMostrar = true;
@@ -314,28 +323,28 @@ class Demo extends Phaser.Scene {
             key: 'eatFromRight',
             frames: [{ key: 'dependientespriteDemo', frame: 8 }],
             frameRate: 4,
-            duration: 500
+            duration: 1100
         });
 
         this.anims.create({
             key: 'eatFromLeft',
             frames: [{ key: 'dependientespriteDemo', frame: 0 }],
             frameRate: 4,
-            duration: 500
+            duration: 1100
         });
 
         this.anims.create({
             key: 'fail',
             frames: [{ key: 'dependientespriteDemo', frame: 9 }],
             frameRate: 4,
-            duration: 500
+            duration: 1100
         });
 
         this.anims.create({
             key: 'correct',
             frames: [{ key: 'dependientespriteDemo', frame: 10 }],
             frameRate: 4,
-            duration: 500
+            duration: 1100
         });
     }
 

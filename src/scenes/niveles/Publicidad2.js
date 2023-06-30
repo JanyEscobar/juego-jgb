@@ -4,9 +4,8 @@ export class Publicidad2 {
     }
 
     create() {
-        this.personaje = this.relatedScene.add.image(200, 540, 'personajeLeche');
-        this.tarrito = this.relatedScene.add.image(470, 250, 'tarrito').setDepth(1);
-        this.granola = this.relatedScene.add.image(380, 350, 'granola');
+        this.relatedScene.video2.play();
+        this.relatedScene.video2.visible = true;
 
         this.relatedScene.player.visible = false;
         this.relatedScene.ground.visible = false;
@@ -18,7 +17,6 @@ export class Publicidad2 {
         this.relatedScene.opcionA.visible = false;
         this.relatedScene.opcionB.visible = false;
         this.relatedScene.opcionC.visible = false;
-        this.relatedScene.publicidadAudio.play();
 
         setTimeout(() => {
             this.relatedScene.player.visible = true;
@@ -34,11 +32,10 @@ export class Publicidad2 {
                 this.relatedScene.opcionC.visible = true;
             }
 
-            this.relatedScene.publicidadAudio.pause();
-            this.personaje.visible = false;
-            this.tarrito.visible = false;
-            this.granola.visible = false;
+            this.relatedScene.video2.stop();
+            this.relatedScene.video2.visible = false;
+
             this.relatedScene.niveles.nextLevel(false);
-        }, 16000);
+        }, 13000);
     }
 }

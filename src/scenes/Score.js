@@ -21,9 +21,11 @@ class Score extends Phaser.Scene {
     }
   
     async create(){
-        this.background = this.add.image(270, 380, 'bgScore');
-        this.tablero = this.add.image(270, 370, 'tablero');
-        this.textoResultados = this.add.image(270, 300, 'textoResultados');
+        this.background = this.add.image(270, 500, 'bgScore');
+        this.background.setScale(1, 1.25);
+      //  this.background.setScale(1, this.game.scale.height * 0.0014);
+        this.tablero = this.add.image(270, 490, 'tablero');
+        this.textoResultados = this.add.image(270, 435, 'textoResultados');
         this.cards = this.physics.add.staticGroup({
             setScale: { x: 1, y: 0.7 },
             key: 'card',
@@ -35,7 +37,7 @@ class Score extends Phaser.Scene {
                 y: 380
             }
         }).setDepth(1);
-        let posY = 380; // Posición inicial en el eje Y
+        let posY = 500; // Posición inicial en el eje Y
         let info = await this.consultarUsuarios();
         this.cards.getChildren().forEach((elemento, index) => {
             elemento.y = posY;
@@ -44,7 +46,7 @@ class Score extends Phaser.Scene {
             this.add.text(380, elemento.y - 10, info[index][1], { fontFamily: 'Arial Black', fontSize: '20px', fontStyle: 'normal', color: '#000000' }).setDepth(1);
             posY += elemento.height - 2;
         });
-        this.btnReintentar = this.add.sprite(270, 730, 'btnReintentar').setInteractive();
+        this.btnReintentar = this.add.sprite(270, 880, 'btnReintentar').setInteractive();
         this.btnReintentar.on('pointerover', () => {
             // this.btnReintentar.setFrame(1);
         }).on('pointerout', () => {
