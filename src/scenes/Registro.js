@@ -21,6 +21,7 @@ class Registro extends Phaser.Scene {
         this.load.image('bgRegistro', 'assets/home1.png');
         this.load.image('powered', 'assets/powered.png');
         this.load.image('btnEntrar', 'assets/btnEntrada.png');
+        this.load.image('btnAtras', 'assets/btnAtras.png');
     }
   
     create(){
@@ -38,12 +39,16 @@ class Registro extends Phaser.Scene {
         let auth = getAuth();
         let db = getFirestore(app);
     
-        this.background = this.add.image(270, 500, 'bgRegistro');
-        this.background.setScale(1, 1.25);
-      //  this.background.setScale(1, this.game.scale.height * 0.0014);
-        this.btnEntrar = this.add.sprite(270, 660, 'btnEntrar').setInteractive();
-        this.powered = this.add.sprite(270, 1084, 'powered').setInteractive();
-        let inputNombre = this.add.rexInputText(240, 270, 300, 52, {
+        this.background = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.2, 'bgRegistro');
+        this.background.setScale(window.innerWidth * 0.0023, window.innerHeight * 0.002);
+        this.btnEntrar = this.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.8, 'btnEntrar').setInteractive();
+        this.btnEntrar.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.btnAtras = this.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.9, 'btnAtras').setInteractive();
+        this.btnAtras.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        // this.powered = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height - 15, 'powered');
+        this.powered = this.add.sprite(this.cameras.main.width / 2, window.innerHeight - 17, 'powered');
+        this.powered.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+        let inputNombre = this.add.rexInputText(this.cameras.main.width * 0.45, window.innerHeight * 0.3, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
@@ -51,8 +56,10 @@ class Registro extends Phaser.Scene {
             placeholder: 'Nombre',
             id: 'inputNombre',
             text: this.nombre,
+            autoComplete: true,
         });
-        let inputEmail = this.add.rexInputText(240, 340, 300, 52, {
+        inputNombre.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        let inputEmail = this.add.rexInputText(this.cameras.main.width * 0.45, window.innerHeight * 0.38, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
@@ -60,9 +67,11 @@ class Registro extends Phaser.Scene {
             placeholder: 'Email',
             id: 'inputEmail',
             text: this.email ? this.email : '',
+            autoComplete: true,
         });
+        inputEmail.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
         if (!this.email) {
-            let inputClave = this.add.rexInputText(240, 410, 300, 52, {
+            let inputClave = this.add.rexInputText(this.cameras.main.width * 0.45, window.innerHeight * 0.46, 300, 52, {
                 backgroundColor: '#FFFFFF',
                 color: '#000000',
                 fontFamily: 'Arial',
@@ -70,16 +79,20 @@ class Registro extends Phaser.Scene {
                 placeholder: 'Clave',
                 type: 'password',
                 id: 'inputClave',
+                autoComplete: true,
             });
+            inputClave.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
         }
-        let inputDogeria = this.add.rexInputText(240, !this.email ? 480 : 410, 300, 52, {
+        let inputDogeria = this.add.rexInputText(this.cameras.main.width * 0.45, !this.email ? window.innerHeight * 0.54 : window.innerHeight * 0.46, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
             fontSize: '24px',
             placeholder: 'Drogeria',
             id: 'inputDogeria',
+            autoComplete: true,
         });
+        inputDogeria.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
 
         var selectElement = document.createElement("select");
         var option1 = document.createElement("option");
@@ -95,8 +108,9 @@ class Registro extends Phaser.Scene {
         selectElement.add(option3);
         selectElement.add(option4);
         selectElement.id = 'selectRol';
-        this.add.dom(240, !this.email ? 550 : 580, selectElement).setOrigin(0.5);
-        
+        this.add.dom(this.cameras.main.width * 0.45, !this.email ? window.innerHeight * 0.62 : window.innerHeight * 0.54, selectElement).setOrigin(0.5)
+            .setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        console.log(!this.email ? 1 : 2);
         this.btnEntrar.on('pointerdown', () => {      
             let email = $('#inputEmail').val();
             let clave = $('#inputClave').val();
@@ -108,7 +122,7 @@ class Registro extends Phaser.Scene {
                     if (clave) {
                         this.registro(auth, email, clave, nombre, rol, db);
                     } else {
-                        alert('Por favor ingrese su contrase単a');
+                        alert('Por favor ingrese su contraseña');
                     }
                 }
                 this.crearUsuario(db, nombre, email, rol, drogeria);
@@ -128,6 +142,9 @@ class Registro extends Phaser.Scene {
                 }
                 alert(textoValidacion);
             }
+        });
+        this.btnAtras.on('pointerdown', () => {
+            this.scene.start("Home");
         });
         this.iniciarMaps();
     }

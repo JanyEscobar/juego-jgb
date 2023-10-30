@@ -21,32 +21,41 @@ class Score extends Phaser.Scene {
     }
   
     async create(){
-        this.background = this.add.image(270, 500, 'bgScore');
-        this.background.setScale(1, 1.25);
-      //  this.background.setScale(1, this.game.scale.height * 0.0014);
-        this.tablero = this.add.image(270, 490, 'tablero');
-        this.textoResultados = this.add.image(270, 435, 'textoResultados');
+        this.background = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.2, 'bgScore');
+        this.background.setScale(window.innerWidth * 0.0023, window.innerHeight * 0.002);
+        this.tablero = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.45, 'tablero');
+        this.tablero.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.tablero.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.textoResultados = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.37, 'textoResultados');
+        this.textoResultados.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.textoResultados.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.cards = this.physics.add.staticGroup({
-            setScale: { x: 1, y: 0.7 },
+            setScale: { x: window.innerWidth * 0.0019, y: window.innerHeight * 0.0008 },
             key: 'card',
             frameQuantity: 5,
             gridAlign: {
                 width: 5,
                 height: 0,
-                x: 100,
-                y: 380
+                x: this.cameras.main.width / 8.95,
+                y: window.innerHeight * 0.45
             }
         }).setDepth(1);
-        let posY = 500; // Posición inicial en el eje Y
+        let posY = window.innerHeight * 0.45; // Posición inicial en el eje Y
         let info = await this.consultarUsuarios();
         this.cards.getChildren().forEach((elemento, index) => {
             elemento.y = posY;
-            this.add.image(130, elemento.y, 'por_defecto').setDepth(1).setScrollFactor(1.5);
-            this.add.text(160, elemento.y - 10, info[index][0], { fontFamily: 'Arial Black', fontSize: '20px', fontStyle: 'normal', color: '#000000' }).setDepth(1);
-            this.add.text(380, elemento.y - 10, info[index][1], { fontFamily: 'Arial Black', fontSize: '20px', fontStyle: 'normal', color: '#000000' }).setDepth(1);
-            posY += elemento.height - 2;
+            this.add.image(this.cameras.main.width * 0.25, elemento.y + 1, 'por_defecto').setDepth(1).setScrollFactor(1.5).setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.add.text(this.cameras.main.width * 0.3, elemento.y - 10, info[index][0], { fontFamily: 'sans-serif', fontSize: '20px', fontStyle: 'normal', color: '#000000' })
+                .setDepth(1).setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012)
+                .texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.add.text(this.cameras.main.width * 0.7, elemento.y - 10, info[index][1], { fontFamily: 'sans-serif', fontSize: '20px', fontStyle: 'normal', color: '#000000' })
+                .setDepth(1).setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012)
+                .texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            posY += elemento.height - 18;
         });
-        this.btnReintentar = this.add.sprite(270, 880, 'btnReintentar').setInteractive();
+        this.btnReintentar = this.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.93, 'btnReintentar').setInteractive();
+        this.btnReintentar.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.btnReintentar.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.btnReintentar.on('pointerover', () => {
             // this.btnReintentar.setFrame(1);
         }).on('pointerout', () => {

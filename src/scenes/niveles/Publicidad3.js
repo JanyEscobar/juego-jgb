@@ -3,7 +3,13 @@ export class Publicidad3 {
         this.relatedScene = scene;
     }
 
+    preload() {
+        
+    }
+
     create() {
+        this.relatedScene.bg_audio.pause();
+        this.relatedScene.video3 = this.relatedScene.add.video(this.relatedScene.cameras.main.width / 2, window.innerHeight * 0.5, 'videoPublicidad3').setScale(window.innerWidth * 0.0014, window.innerHeight * 0.0008).setDepth(2);
         this.relatedScene.video3.play();
         this.relatedScene.video3.visible = true;
         
@@ -17,6 +23,7 @@ export class Publicidad3 {
         this.relatedScene.opcionA.visible = false;
         this.relatedScene.opcionB.visible = false;
         this.relatedScene.opcionC.visible = false;
+        this.relatedScene.btnVolumen.visible = false;
 
         setTimeout(() => {
             this.relatedScene.player.visible = true;
@@ -28,6 +35,7 @@ export class Publicidad3 {
             this.relatedScene.respuesta3.visible = true;
             this.relatedScene.opcionA.visible = true;
             this.relatedScene.opcionB.visible = true;
+            this.relatedScene.btnVolumen.visible = true;
             if (this.relatedScene.item.respuesta.tres) {
                 this.relatedScene.opcionC.visible = true;
             }
@@ -36,6 +44,9 @@ export class Publicidad3 {
             this.relatedScene.video3.visible = false;
 
             this.relatedScene.niveles.nextLevel(false);
-        }, 18000);
+            if (this.relatedScene.reproducirAudio) {
+                this.relatedScene.bg_audio.resume();
+            }
+        }, 25000);
     }
 }

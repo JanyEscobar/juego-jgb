@@ -18,7 +18,7 @@ export class Phase {
       this.relatedScene.pillCollition = true;
       this.relatedScene.sideCollition = player.x > pill.x ? 1 : 0;
       this.relatedScene.swallow.play();
-      if (this.relatedScene.answer != 5 && this.relatedScene.answer != 6 && this.relatedScene.answer != 7 && this.relatedScene.answer != 8) {
+      if (!this.relatedScene.proteccion && (this.relatedScene.answer == 0 || this.relatedScene.answer == 1 || this.relatedScene.answer == 2)) {
         this.relatedScene.bg_audio.pause();
       }
       pill.destroy();

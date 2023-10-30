@@ -35,12 +35,13 @@ export class Niveles {
     create() {
         let CurrenPhaseClass = this.niveles.pop();
         this.currentPhase = new CurrenPhaseClass(this.relatedScene);
+        this.currentPhase.preload();
         this.relatedScene.proteccion = false;
         return this.currentPhase.create();
     }
 
     pillsFalling() {
-        let posiciones = [50, 245, 490];
+        let posiciones = [window.innerWidth / 7, window.innerWidth / 2, window.innerWidth - 40];
         let posicionesActuales = [];
         if (this.currentPhase.pills) {
             if (this.currentPhase.pills.countActive() < 3) {
@@ -55,15 +56,23 @@ export class Niveles {
                 if (this.relatedScene.vidas.vidasActuales.countActive() < 2) {
                     cantidadSprite = 8;
                 }
-                var pill = this.currentPhase.pills.get(p, -68).setCircle(2, 0, 120);
+                var pill = this.currentPhase.pills.get(p, -68).setCircle(2, 0, 120).setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
                 let frame = this.getRandomInt(1, cantidadSprite);
                 if (this.relatedScene.proteccion) {
                     while (frame == 7) {
                         frame = this.getRandomInt(1, cantidadSprite);
                     }
                 }
+                // pill.body.gravity.y = 80;
                 pill.answer = frame;
                 pill.setFrame(pill.answer - 1);
+                pill.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+                if (((pill.answer - 1) == 2) && this.relatedScene.opcionC.visible == false) {
+                    pill.destroy();
+                }
+                if (((pill.answer - 1) == 5)) {
+                    pill.destroy();
+                }
                 // pill.answer = 5;
                 // pill.setFrame(4);
             }

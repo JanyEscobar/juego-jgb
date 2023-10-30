@@ -7,6 +7,18 @@ class Demo extends Phaser.Scene {
     }
 
     init(data) {
+        // this.time = 0;
+        // this.path_dependiente = 'assets/Sprites_gril.png';
+        // this.celebracion = 'assets/celebracion_nina.png';
+        // this.perdiste = 'assets/girl_sad_body.png';
+        // this.happy = 'assets/girl_happy.png';
+        // this.sad = 'assets/girl_sad.png';
+        // this.personajeDemo = 'assets/sprite_girl_milk1.png';
+        // this.comenzar = true;
+        // this.nivel = 1;
+        // this.id = false;
+        // this.personaje = 'assets/Sprites_gril.png';
+
         this.time = data.time;
         this.path_dependiente = data.path_dependiente;
         this.celebracion = data.celebracion;
@@ -16,7 +28,7 @@ class Demo extends Phaser.Scene {
         this.personajeDemo = data.personajeDemo;
         this.comenzar = data.comenzar;
         this.nivel = data.nivel ?? 1;
-        this.id = data.id;
+        this.id = data.id ?? false;
         this.personaje = data.personaje;
     }
 
@@ -29,9 +41,16 @@ class Demo extends Phaser.Scene {
         this.load.image('tarritos', 'assets/tarritos.png');
         this.load.image('cuadro_mensaje', 'assets/cuadro_mensaje.png');
         this.load.image('personajeDemo', this.personajeDemo);
-        this.load.spritesheet('pillDemo', 'assets/objetos.png', { frameWidth: 75.3, frameHeight: 196 });
+        this.load.image('skip', 'assets/skip.png');
+        this.load.image('textoDemo1', 'assets/textoDemo1.png');
+        this.load.image('textoDemo2', 'assets/textoDemo2.png');
+        this.load.image('textoDemo3', 'assets/textoDemo3.png');
+        this.load.image('textoDemo4', 'assets/textoDemo4.png');
+        this.load.image('textoDemo5', 'assets/textoDemo5.png');
+        this.load.image('opcionA', 'assets/a.png');
+        this.load.image('opcionB', 'assets/b.png');
+        this.load.spritesheet('pillDemo', 'assets/objetos.png', { frameWidth: 75.4, frameHeight: 196 });
         this.load.spritesheet('dependientespriteDemo', this.path_dependiente, { frameWidth: 128, frameHeight: 129 });
-        this.load.spritesheet('cuenta', 'assets/cuenta.png', { frameWidth: 175, frameHeight: 132 });
         this.load.spritesheet('btnDemo', 'assets/btnDemo.png', { frameWidth: 364, frameHeight: 94 });
         this.load.spritesheet('btnGo', 'assets/btnGo.png', { frameWidth: 400, frameHeight: 160 });
     }
@@ -47,44 +66,52 @@ class Demo extends Phaser.Scene {
         this.comenzarTarritos = false;
         this.dejarDeMostrar = false;
         this.permitirMoverse = true;
+        this.mostrarSoloTarritos = true;
+        this.mostrarSoloVida = false;
+        this.mostrarSoloTrampas = false;
+        this.maximoElementos = 1;
+        this.mostrarMensajeTarrito = true;
+        this.mostrarMensajeVida = true;
+        this.mostrarMensajeTrampa = true;
 
-        this.background = this.add.image(270, 500, 'backgroundDemo');
-        this.background.setScale(1, 1.25);
-      //  this.background.setScale(1, this.game.scale.height * 0.0014);
-        this.mundo = this.add.text(180, 15, "Demo", { fontFamily: 'Arial Black', fontSize: '220%', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
-        this.cuenta = this.physics.add.sprite(270, 350, 'cuenta').setDepth(1);
-        this.cuenta.body.allowGravity = false;
-        this.anims.create({
-            key: 'tiempo',
-            frames: this.anims.generateFrameNumbers('cuenta', { start: 0, end: 3 }),
-            duration: 7000
-        });
-
-        this.cuenta.visible = false;
-        this.mensaje = this.add.image(270, 470, 'mensaje');
-        this.tarritos = this.add.image(280, 620, 'tarritos');
-        this.personajeDemo = this.add.image(240, 620, 'personajeDemo');
+        this.background = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.2, 'backgroundDemo');
+        this.background.setScale(window.innerWidth * 0.0023, window.innerHeight * 0.002);
+        this.mundo = this.add.text(this.cameras.main.width * 0.25, 10, "Mundo \nVitaminas y Minerales", { color: '#FFF', fontSize: '15px', fontFamily: 'sans-serif', fontStyle: 'normal', fontWeight: 'blod', lineSpacing: 1.1 }).setDepth(1);
+        this.mensaje = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'mensaje');
+        this.mensaje.setScale(window.innerWidth * 0.0015, window.innerHeight * 0.001);
+        this.mensaje.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.tarritos = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.64, 'tarritos');
+        this.tarritos.setScale(window.innerWidth * 0.0015, window.innerHeight * 0.001);
+        this.tarritos.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.personajeDemo = this.add.image(this.cameras.main.width / 2.1, window.innerHeight * 0.66, 'personajeDemo');
+        this.personajeDemo.setScale(window.innerWidth * 0.0015, window.innerHeight * 0.001);
+        this.personajeDemo.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         
-        this.playerDemo = this.physics.add.sprite(250, 683, 'dependientespriteDemo').setInteractive();
+        this.playerDemo = this.physics.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.66, 'dependientespriteDemo').setInteractive().setDepth(2);
+        this.playerDemo.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0011);
+        this.playerDemo.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.playerDemo.setCollideWorldBounds(true);
         this.playerDemo.visible = false;
 
-        this.cuenta.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function() {
-            this.playerDemo.visible = true;
-            this.cuenta.visible = false;
-        }, this);
-
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.balloonDemo = this.add.image(270, 85, 'balloonDemo').setDepth(1).setAlpha(0.95);
+        this.balloonDemo = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.12, 'balloonDemo').setDepth(1).setAlpha(0.95);
+        this.balloonDemo.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.balloonDemo.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.balloonDemo.visible = false;
 
-        this.groundDemo = this.physics.add.image(270, 880, 'groundDemo').setDepth(1);
+        this.groundDemo = this.physics.add.image(window.innerWidth * 0.5, window.innerHeight * 0.9, 'groundDemo').setDepth(1);
+        this.groundDemo.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.groundDemo.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.groundDemo.setCollideWorldBounds(true);
         this.groundDemo.setImmovable(true);
         this.groundDemo.visible = false;
-        this.btnDemo = this.add.sprite(270, 760, 'btnDemo').setInteractive();
-        this.btnGo = this.add.sprite(270, 880, 'btnGo').setInteractive();
+        this.btnDemo = this.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.8, 'btnDemo').setInteractive();
+        this.btnDemo.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.btnDemo.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.btnGo = this.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.9, 'btnGo').setInteractive();
+        this.btnGo.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
         this.btnGo.visible = false;
+        this.btnGo.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
 
         this.animatePlayerDemo();
 
@@ -101,47 +128,31 @@ class Demo extends Phaser.Scene {
 
         // Evento para mover el sprite mientras se arrastra
         this.input.on('drag', function (pointer, gameObject, dragX) {
+            this.scene.pause();
             if (dragX > gameObject.x) {
-                this.scene.pause();
-                if (this.permitirMoverse) {
-                    this.playerDemo.setFrame(5);
-                    setTimeout(() => {
-                        this.permitirMoverse = false;
-                        this.playerDemo.setFrame(5);
-                    }, 100);
-                    setTimeout(() => {
-                        this.playerDemo.setFrame(6);
-                    }, 400);
-                    setTimeout(() => {
-                        this.playerDemo.setFrame(7);
-                        this.permitirMoverse = true;
-                    }, 600);
-                }
-                this.scene.resume('Demo');
+                this.playerDemo.anims.play('right', true);
                 this.mostrarDerecha = true;
                 this.mostrarIzquierda = false;
                 if (!this.moverDerecha) {
                     this.moverDerecha = true;
-                    this.textoAccion.setText('Vamos a la izquierda');
                 }
             }
             if (dragX < gameObject.x) {
-                this.scene.pause();
-                if (this.permitirMoverse) {
-                    this.playerDemo.setFrame(3);
-                    setTimeout(() => {
-                        this.permitirMoverse = false;
-                        this.playerDemo.setFrame(3);
-                    }, 100);
-                    setTimeout(() => {
-                        this.playerDemo.setFrame(2);
-                    }, 400);
-                    setTimeout(() => {
-                        this.playerDemo.setFrame(1);
-                        this.permitirMoverse = true;
-                    }, 600);
-                }
-                this.scene.resume('Demo');
+                // if (this.permitirMoverse) {
+                //     this.playerDemo.setFrame(3);
+                //     setTimeout(() => {
+                //         this.permitirMoverse = false;
+                //         this.playerDemo.setFrame(3);
+                //     }, 100);
+                //     setTimeout(() => {
+                //         this.playerDemo.setFrame(2);
+                //     }, 400);
+                //     setTimeout(() => {
+                //         this.playerDemo.setFrame(1);
+                //         this.permitirMoverse = true;
+                //     }, 600);
+                // }
+                this.playerDemo.anims.play('left', true);
                 this.mostrarDerecha = false;
                 this.mostrarIzquierda = true;
                 if (!this.moverIzquierda) {
@@ -149,6 +160,18 @@ class Demo extends Phaser.Scene {
                 }
             }
             gameObject.x = dragX;
+
+            if (this.textoDemo2) {
+                this.textoDemo2.destroy();
+            }
+            if (this.textoDemo1) {
+                this.textoDemo1.destroy();
+                this.opcionA.destroy();
+                this.opcionB.destroy();
+                this.respuesta1.destroy();
+                this.respuesta2.destroy();
+            }
+            this.scene.resume('Demo');
         }, this);
 
         // Evento para finalizar el arrastre
@@ -183,15 +206,60 @@ class Demo extends Phaser.Scene {
         }).on('pointerdown', () => {
             this.groundDemo.visible = true;
             this.balloonDemo.visible = true;
+            this.playerDemo.visible = true;
             this.mensaje.visible = false;
             this.btnDemo.visible = false;
             this.personajeDemo.visible = false;
             this.tarritos.visible = false;
             this.mundo.x = 15;
-            this.mensajeDemo = this.add.text(window.innerWidth > 700 ? 550 * 0.13 : 640 * 0.17, 820, "Desliza el personaje a los lados y\n atrapa el tarrito.", { fontFamily: 'Arial Black', fontSize: '220%', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
-            this.textoAccion = this.add.text(window.innerWidth > 700 ? 550 * 0.3 : 640 * 0.26, 890, 'Vamos a la derecha', { fontFamily: 'Arial Black', fontSize: '220%', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
-            this.cuenta.visible = true;
-            this.cuenta.anims.play('tiempo');
+            this.mensajeDemo = this.add.text(window.innerWidth * 0.2, window.innerHeight * 0.8, "Aquí te preguntaremos algo \nsobre Tarrito Rojo", { fontWeight: 'blod', fontFamily: 'sans-serif', fontSize: '25px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
+            this.mensajeDemo.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.mensajeDemo.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.opcionA = this.physics.add.image(window.innerWidth * 0.2, window.innerHeight * 0.93, 'opcionA').setDepth(1);
+            this.opcionA.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.opcionA.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.opcionA.setCollideWorldBounds(true);
+            this.opcionA.setImmovable(true);
+            this.opcionA.body.allowGravity = false;
+            this.opcionB = this.physics.add.image(window.innerWidth * 0.6, window.innerHeight * 0.93, 'opcionB').setDepth(1);
+            this.opcionB.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.opcionB.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.opcionB.setCollideWorldBounds(true);
+            this.opcionB.setImmovable(true);
+            this.opcionB.body.allowGravity = false;
+
+            let tamanoTexto = this.cameras.main.width * 0.07 > 27 ? 27 : this.cameras.main.width * 0.065;
+            this.respuesta1 = this.add.text(window.innerWidth * 0.25, window.innerHeight * 0.885, "Esta es una \nRespuesta", { fontFamily: 'sans-serif', fontSize: `${tamanoTexto}px`, color: '#FFF', align: 'center', fontStyle: 'normal', fontWeight: '700', lineSpacing: 1.1, stroke: '#FF0000', strokeThickness: 4 }).setDepth(1);
+            this.respuesta1.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.respuesta1.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.respuesta2 = this.add.text(window.innerWidth * 0.65, window.innerHeight * 0.885, "Esta es otra \nRespuesta", { fontFamily: 'sans-serif', fontSize: `${tamanoTexto}px`, color: '#FFF', align: 'center', fontStyle: 'normal', fontWeight: '700', lineSpacing: 1.1, stroke: '#FF0000', strokeThickness: 4 }).setDepth(1);
+            this.respuesta2.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.respuesta2.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+
+            this.textoDemo1 = this.physics.add.image(this.cameras.main.width / 2, window.innerHeight * 0.58, 'textoDemo1').setDepth(1).setInteractive();
+            this.textoDemo1.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.textoDemo1.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.textoDemo1.setCollideWorldBounds(true);
+            this.textoDemo1.setImmovable(true);
+            this.textoDemo1.body.allowGravity = false;
+            this.textoDemo1.on('pointerdown', () => {
+                this.textoDemo1.destroy();
+                this.opcionA.destroy();
+                this.opcionB.destroy();
+                this.respuesta1.destroy();
+                this.respuesta2.destroy();
+                this.mensajeDemo.y = window.innerHeight * 0.85;
+                this.mensajeDemo.setText('Desliza el personaje a los \nlados y atrapa el Tarrito.').setFontSize(this.cameras.main.width * 0.07 > 27 ? 27 : this.cameras.main.width * 0.08);
+                this.textoDemo2 = this.physics.add.image((this.playerDemo.x == window.innerWidth - 40 ? this.playerDemo.x - 80 : this.playerDemo.x + 50), this.playerDemo.y - 80, 'textoDemo2').setDepth(1).setInteractive();
+                this.textoDemo2.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+                this.textoDemo2.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+                this.textoDemo2.setCollideWorldBounds(true);
+                this.textoDemo2.setImmovable(true);
+                this.textoDemo2.body.allowGravity = false;
+                this.textoDemo2.on('pointerdown', () => {
+                    this.textoDemo2.destroy();
+                });
+            });
         });
 
         this.btnGo.on('pointerover', () => {
@@ -206,13 +274,29 @@ class Demo extends Phaser.Scene {
                 "perdiste": this.perdiste,
                 "happy": this.happy,
                 "sad": this.sad,
-                "comenzar": this.comenzar,
                 "time": this.time,
-                "nivel": this.nivel,
                 "id": this.id,
                 "personaje": this.personaje,
             });
         });
+
+        this.btnSkip = this.add.image(this.cameras.main.width * 0.5, window.innerHeight * 0.9, 'skip').setInteractive();
+        this.btnSkip.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.btnSkip.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        
+        this.btnSkip.on('pointerdown', () => {
+            this.scene.start("Game", {
+                "path_dependiente": this.path_dependiente,
+                "celebracion": this.celebracion,
+                "perdiste": this.perdiste,
+                "happy": this.happy,
+                "sad": this.sad,
+                "time": this.time,
+                "id": this.id,
+                "personaje": this.personaje,
+            });
+        });
+
         let firebaseConfig = {
             apiKey: "AIzaSyBRtGvmHjHUHksWz_3LD4Xk998GCJBWZwU",
             authDomain: "juego-jgb-54a43.firebaseapp.com",
@@ -224,7 +308,9 @@ class Demo extends Phaser.Scene {
         };
         let app = initializeApp(firebaseConfig);
         let db = getFirestore(app);
-        this.actualizarDemo(db, this.id);
+        if (this.id) {
+            this.actualizarDemo(db, this.id);
+        }
     }
 
     update(time, delta) {
@@ -236,20 +322,33 @@ class Demo extends Phaser.Scene {
             }
             this.scene.pause();
             setTimeout(() => {
-                if (this.answerDemo == 3) {
+                if (this.answerDemo == 3 || this.answerDemo == 1 || this.answerDemo == 2) {
+                    this.mostrarSoloVida = true;
+                    this.mostrarSoloTarritos = false;
+                    this.maximoElementos = 1;
+                    this.pillsDemo.clear(true, true);
+                } else if (this.answerDemo == 7) {
+                    this.mostrarSoloVida = false;
+                    this.mostrarSoloTrampas = true;
+                    this.maximoElementos = 1;
+                    this.pillsDemo.clear(true, true);
+                } else if (this.answerDemo == 4 || this.answerDemo == 5) {
+                    this.mostrarSoloTrampas = false;
+                    this.pillsDemo.clear(true, true);
+                }
+                if (!this.mostrarSoloTarritos && !this.mostrarSoloVida && !this.mostrarSoloTrampas) {
                     this.groundDemo.destroy();
                     this.mensajeDemo.destroy();
-                    this.textoAccion.destroy();
+                    this.btnSkip.destroy();
                     this.background.setTexture('background');
-                    this.groundDemo = this.physics.add.image(270, 450, 'cuadro_mensaje').setDepth(1);
-                    this.mensajeDemo = this.add.text(window.innerWidth > 700 ? 550 * 0.18 : 640 * 0.2, 410, "¡Muy bien! estas\n listo para empezar!", { fontFamily: 'Arial Black', fontSize: '30px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
+                    this.groundDemo = this.physics.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'cuadro_mensaje').setDepth(1);
+                    this.groundDemo.setScale(window.innerWidth * 0.0015, window.innerHeight * 0.001);
+                    this.mensajeDemo = this.add.text(window.innerWidth * 0.22, this.cameras.main.height / 2.2, "¡Muy bien! estas\n listo para empezar!", { fontFamily: 'sans-serif', fontSize: '30px', fontStyle: 'normal', color: '#B70E0C', align: "center" }).setDepth(1);
+                    this.mensajeDemo.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
                     this.groundDemo.body.allowGravity = false;
                     this.playerDemo.visible = false;
                     this.btnGo.visible = true;
                     this.pillsDemo.clear(true, true);
-                } else {
-                    this.textoAccion.x = window.innerWidth > 700 ? 550 * 0.25 : 640 * 0.25;
-                    this.textoAccion.setText('Debes atrapar el tarrito\ncon la letra C');
                 }
                 this.scene.resume('Demo');
             }, 1000);
@@ -267,7 +366,6 @@ class Demo extends Phaser.Scene {
             this.playerDemo.anims.play('right', true);
             if (!this.moverDerecha) {
                 this.moverDerecha = true;
-                this.textoAccion.setText('Vamos a la izquierda');
             }
         } else if (this.playerDemo && this.isDragging) {
         } else {
@@ -281,20 +379,91 @@ class Demo extends Phaser.Scene {
         }
 
         this.pillsDemo.getChildren().forEach(item => {
-            if (item.y > 740) {
+            if (item.y > window.innerHeight * 0.92) {
                 item.destroy();
             }
         });
 
         if (this.playerDemo.visible && this.moverIzquierda && this.moverDerecha && !this.dejarDeMostrar) {
-            this.textoAccion.y = 850;
-            this.textoAccion.x = window.innerWidth > 700 ? 550 * 0.18 : 640 * 0.18;
-            this.mensajeDemo.destroy();
-            this.textoAccion.setText('Muy buen!\nAtrapa el tarrito con la letra C');
             this.comenzarTarritos = true;
             this.dejarDeMostrar = true;
         }
 
+        if (this.mostrarSoloTarritos && this.mostrarMensajeTarrito) {
+            this.pillsDemo.getChildren().forEach(item => {
+                if (item.y > window.innerHeight / 3) {
+                    this.scene.pause();
+                    let pos = [window.innerWidth / 7, window.innerWidth / 2, window.innerWidth - 40];
+                    let posicionX = item.x;
+                    if (item.x == window.innerWidth / 7) {
+                        posicionX =  item.x + 80;
+                    } 
+                    if (item.x == window.innerWidth - 40) {
+                        posicionX = item.x - 80;
+                    }
+                    let posicionY = item.y - 50;
+                    this.textoDemo3 = this.physics.add.image(posicionX, posicionY, 'textoDemo3').setDepth(1).setInteractive();
+                    this.textoDemo3.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+                    this.textoDemo3.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+                    setTimeout(() => {
+                        this.textoDemo3.destroy();
+                        this.scene.resume('Demo');
+                        this.mostrarMensajeTarrito = false;
+                        this.maximoElementos = 3;
+                    }, 10000);
+                }
+            });
+        }
+        if (this.mostrarSoloVida && this.mostrarMensajeVida) {
+            this.pillsDemo.getChildren().forEach(item => {
+                if (item.y > window.innerHeight / 3) {
+                    this.scene.pause();
+                    let pos = [window.innerWidth / 7, window.innerWidth / 2, window.innerWidth - 40];
+                    let posicionX = item.x;
+                    if (item.x == window.innerWidth / 7) {
+                        posicionX =  item.x + 80;
+                    } 
+                    if (item.x == window.innerWidth - 40) {
+                        posicionX = item.x - 80;
+                    }
+                    let posicionY = item.y - 50;
+                    this.textoDemo4 = this.physics.add.image(posicionX, posicionY, 'textoDemo4').setDepth(1).setInteractive();
+                    this.textoDemo4.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+                    this.textoDemo4.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+                    setTimeout(() => {
+                        this.textoDemo4.destroy();
+                        this.scene.resume('Demo');
+                        this.mostrarMensajeVida = false;
+                        this.maximoElementos = 3;
+                    }, 10000);
+                }
+            });
+        }
+        if (this.mostrarSoloTrampas && this.mostrarMensajeTrampa) {
+            this.pillsDemo.getChildren().forEach(item => {
+                if (item.y > window.innerHeight / 3) {
+                    this.scene.pause();
+                    let pos = [window.innerWidth / 7, window.innerWidth / 2, window.innerWidth - 40];
+                    let posicionX = item.x;
+                    if (item.x == window.innerWidth / 7) {
+                        posicionX =  item.x + 80;
+                    } 
+                    if (item.x == window.innerWidth - 40) {
+                        posicionX = item.x - 80;
+                    }
+                    let posicionY = item.y - 50;
+                    this.textoDemo5 = this.physics.add.image(posicionX, posicionY, 'textoDemo5').setDepth(1).setInteractive();
+                    this.textoDemo5.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+                    this.textoDemo5.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+                    setTimeout(() => {
+                        this.textoDemo5.destroy();
+                        this.scene.resume('Demo');
+                        this.mostrarMensajeTrampa = false;
+                        this.maximoElementos = 3;
+                    }, 10000);
+                }
+            });
+        }
         this.pillCollitionDemo = false;
     }
 
@@ -349,9 +518,9 @@ class Demo extends Phaser.Scene {
     }
 
     pillsFallingDemo() {
-        let posiciones = [50, 245, 490];
+        let posiciones = [window.innerWidth / 7, window.innerWidth / 2, window.innerWidth - 40];
         let posicionesActuales = [];
-        if (this.pillsDemo.countActive() < 3) {
+        if (this.pillsDemo.countActive() < this.maximoElementos) {
             this.pillsDemo.getChildren().forEach(item => {
                 posicionesActuales.push(item.x);
             });
@@ -359,10 +528,24 @@ class Demo extends Phaser.Scene {
             while (posicionesActuales.includes(p)) {
                 p = posiciones[this.getRandomIntDemo(0, 2)];
             }
-            var pill = this.pillsDemo.get(p, -68).setCircle(2, 0, 120);
-            pill.answer = this.getRandomIntDemo(1, 7);
+            var pill = this.pillsDemo.get(p, -68).setCircle(2, 0, 120).setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            let fin = 7;
+            let inicio = 1;
+            if (this.mostrarSoloTarritos) {
+                fin = 3;
+            }
+            if (this.mostrarSoloTrampas) {
+                fin = 5;
+                inicio = 4;
+            }
+            pill.answer = this.getRandomIntDemo(inicio, fin);
+            if (this.mostrarSoloVida) {
+                pill.answer = 7;
+            }
+            // console.log(pill.answer);
+            // pill.setFrame(7);
             pill.setFrame(pill.answer - 1);
-            // pill.setFrame(6);
+            pill.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         }
     }
 
@@ -390,7 +573,7 @@ class Demo extends Phaser.Scene {
         this.playerDemo.anims.play('right', true);
         if (!this.moverDerecha) {
             this.moverDerecha = true;
-            this.textoAccion.setText('Vamos a la izquierda');
+            // this.textoAccion.setText('Vamos a la izquierda');
         }
     }
 }

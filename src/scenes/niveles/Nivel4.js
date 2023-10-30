@@ -1,19 +1,38 @@
 import { Phase } from './Phase.js';
 
 export class Nivel4 extends Phase {
+
+    preload() {
+        // this.relatedScene.load.video('videoPublicidad4', ['assets/publicidad4.mp4']);
+    }
+
     create() {
-        this.relatedScene.bg_audio.resume();
-        this.background = this.relatedScene.background.setTexture('background4', 0);
-        this.relatedScene.nombreBackground = 'background4';
+        if (this.relatedScene.reproducirAudio) {
+            this.relatedScene.bg_audio.resume();
+        }
+        this.background = this.relatedScene.background.setTexture('background3', 0);
+        this.relatedScene.nombreBackground = 'background3';
+        this.relatedScene.balloon.setTexture('balloon3', 0);
         this.relatedScene.player.visible = false;
-        this.relatedScene.player.x = 270;
+        this.relatedScene.player.x = this.relatedScene.cameras.main.width / 2;
+        this.relatedScene.ground.setTexture('ground', 0);
+        this.relatedScene.palabraVida.setColor('#FFFFFF');
+        this.relatedScene.pregunta.setColor('#B70E0C');
+        this.relatedScene.respuesta1.setColor('#FFFFFF').setShadow(2, 2, '#B70E0C', 2).setStroke('#FF0000', 4);
+        this.relatedScene.respuesta2.setColor('#FFFFFF').setShadow(2, 2, '#B70E0C', 2).setStroke('#FF0000', 4);
+        this.relatedScene.respuesta3.setColor('#FFFFFF').setShadow(2, 2, '#B70E0C', 2).setStroke('#FF0000', 4);
+        this.relatedScene.opcionA.setTexture('opcionA', 0);
+        this.relatedScene.opcionB.setTexture('opcionB', 0);
+        this.relatedScene.opcionC.setTexture('opcionC', 0);
         this.pills = this.relatedScene.physics.add.group({
-            defaultKey: 'pill2'
+            defaultKey: 'pill4'
         });
-        this.relatedScene.nombreMundo.setText('Mundo Energía');
+        this.relatedScene.nombreMundo.setText('Mundo Vitalidad').setColor('#FFFFFF');
         this.configureColisions();
 
-        this.relatedScene.cuenta = this.relatedScene.physics.add.sprite(280, 350, 'cuenta').setDepth(1);
+        this.relatedScene.cuenta = this.relatedScene.physics.add.sprite(this.relatedScene.cameras.main.width / 2, this.relatedScene.cameras.main.height / 2, 'cuenta').setDepth(1);
+        this.relatedScene.cuenta.setScale(window.innerWidth * 0.0015, window.innerHeight * 0.001);
+        this.relatedScene.cuenta.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.relatedScene.cuenta.body.allowGravity = false;
         this.relatedScene.anims.create({
             key: 'tiempo',

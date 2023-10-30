@@ -11,16 +11,23 @@ class Home extends Phaser.Scene {
     }
 
     preload(){
+        this.load.video('videoPublicidad1', ['assets/publicidad1.mp4']);
+        this.load.video('videoPublicidad2', ['assets/publicidad2.mp4']);
+        this.load.video('videoPublicidad3', ['assets/publicidad3.mp4']);
+        this.load.video('videoPublicidad4', ['assets/publicidad4.mp4']);
+        // this.load.video('nombre', 'ruta/al/video.mp4', 'loadeddata', false, false);
         this.load.image('bghome', 'assets/home1.png');
-        this.load.image('vector', 'assets/vector.png');
         this.load.image('logo', 'assets/logo_TR.png');
         this.load.image('bienvenida', 'assets/bienvenidos.png');
         this.load.image('iniciarSesion', 'assets/iniciar_sesion.png');
-        this.load.image('registrate', 'assets/registrate.png');
-        this.load.image('google', 'assets/google.png');
-        this.load.image('outlook', 'assets/outlook.png');
+        this.load.image('btnOmitir', 'assets/btnOmitir.png');
+        this.load.image('google', 'assets/btnGoogle.png');
+        this.load.image('outlook', 'assets/btnOutlook.png');
         this.load.image('btnRegistrarse', 'assets/btnRegistrar.png');
         this.load.image('powered', 'assets/powered.png');
+        // this.load.on('progress', function (value) {
+        //     console.log('Cargando');
+        // });
 
         this.load.spritesheet('btnEntrar', 'assets/btnEntrada.png', { frameWidth: 364, frameHeight: 94 });
     }
@@ -39,27 +46,35 @@ class Home extends Phaser.Scene {
         let auth = getAuth();
         let db = getFirestore(app);
 
-        this.validarAutenticacion(auth, db);
+        // this.validarAutenticacion(auth, db);
         
-        this.background = this.add.image(270, 500, 'bghome');
-        this.background.setScale(1, 1.25);
-      //  this.background.setScale(1, this.game.scale.height * 0.0014);
-        this.logo = this.add.image(270, 150, 'logo');
-        this.logo.setScale(2, 2);
-        this.bienvenida = this.add.image(270, 330, 'bienvenida');
-        this.iniciarSesion = this.add.image(270, 370, 'iniciarSesion');
-        this.vector = this.add.image(278, 490, 'vector');
-        this.registrate = this.add.image(270, 430, 'registrate');
-        this.powered = this.add.image(270, 1084, 'powered');
-        let inputEmail = this.add.rexInputText(250, 640, 300, 52, {
+        this.background = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.2, 'bghome');
+        this.background.setScale(window.innerWidth * 0.0023, window.innerHeight * 0.002);
+        this.background.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.logo = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.15, 'logo');
+        this.logo.setScale(1, 1);
+        this.logo.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.bienvenida = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.27, 'bienvenida');
+        this.bienvenida.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+        this.bienvenida.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.iniciarSesion = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.32, 'iniciarSesion');
+        this.iniciarSesion.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+        this.iniciarSesion.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        // this.powered = this.add.image(this.cameras.main.width / 2, this.cameras.main.height - 15, 'powered');
+        this.powered = this.add.image(this.cameras.main.width / 2, window.innerHeight - 17, 'powered');
+        this.powered.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+        this.powered.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        let inputEmail = this.add.rexInputText(this.cameras.main.width * 0.46, window.innerHeight * 0.38, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
             fontSize: '24px',
             placeholder: 'Usuario',
             id: 'inputEmail',
+            autoComplete: true,
         });
-        let inputClave = this.add.rexInputText(250, 710, 300, 52, {
+        inputEmail.setScale(window.innerWidth * 0.002, window.innerHeight * 0.0012);
+        let inputClave = this.add.rexInputText(this.cameras.main.width * 0.46, window.innerHeight * 0.46, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
             fontFamily: 'Arial',
@@ -67,15 +82,36 @@ class Home extends Phaser.Scene {
             placeholder: 'Clave',
             type: 'password',
             id: 'inputClave',
+            autoComplete: true,
         });
+        inputClave.setScale(window.innerWidth * 0.002, window.innerHeight * 0.0012);
          
-        this.btnEntrar = this.add.sprite(270, 820, 'btnEntrar').setDepth(1).setInteractive();
-        this.btnRegistrarse = this.add.image(450, 490, 'btnRegistrarse').setDepth(1).setInteractive();
-        this.btnGoogle = this.add.image(200, 475, 'google').setInteractive();
-        this.btnOutlook = this.add.image(200, 520, 'outlook').setInteractive();
+        this.btnEntrar = this.add.sprite(this.cameras.main.width * 0.52, window.innerHeight * 0.6, 'btnEntrar').setDepth(1).setInteractive();
+        this.btnEntrar.setScale(window.innerWidth * 0.002, window.innerHeight * 0.0012);
+        this.btnEntrar.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.btnRegistrarse = this.add.image(this.cameras.main.width * 0.68, window.innerHeight * 0.7, 'btnRegistrarse').setDepth(1).setInteractive();
+        this.btnRegistrarse.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.btnRegistrarse.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.btnGoogle = this.add.image(this.cameras.main.width * 0.3, window.innerHeight * 0.7, 'google').setInteractive();
+        this.btnGoogle.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.btnGoogle.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.btnOutlook = this.add.image(this.cameras.main.width * 0.45, window.innerHeight * 0.7, 'outlook').setInteractive();
+        this.btnOutlook.setScale(window.innerWidth * 0.0019, window.innerHeight * 0.0012);
+        this.btnOutlook.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.btnOmitir = this.add.image(this.cameras.main.width * 0.52, window.innerHeight * 0.8, 'btnOmitir').setInteractive();
+        this.btnOmitir.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.btnOmitir.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         
+        this.btnOmitir.on('pointerdown', () => {
+            this.scene.start("Opcion", {
+                demo: false,
+                nivel: 1,
+                id: false,
+            });
+        });
+
         this.btnGoogle.on('pointerdown', () => {
-            this.loginGoogle(auth, provider, db);
+            this.loginGoogle(auth, provider, db); 
         });
         
         this.btnOutlook.on('pointerdown', () => {
@@ -97,7 +133,7 @@ class Home extends Phaser.Scene {
                     textoValidacion = textoValidacion + 'Por favor ingrese su usuario.\n';
                 }
                 if (!clave) {
-                    textoValidacion = textoValidacion + 'Por favor ingrese su contrase単a.';
+                    textoValidacion = textoValidacion + 'Por favor ingrese su contraseña.';
                 }
                 alert(textoValidacion);
             }
@@ -114,10 +150,9 @@ class Home extends Phaser.Scene {
             let credential = GoogleAuthProvider.credentialFromResult(result);
             let token = credential.accessToken;
             let user = result.user;
-            console.log(user);
             this.consultarUsuario(db, user.email).then((info) => {
                 if (info['id']) {
-                    this.scene.start("Homescene", {
+                    this.scene.start("Opcion", {
                         demo: info['demo'],
                         nivel: info['nivel'],
                         id: info['id'],
@@ -142,7 +177,7 @@ class Home extends Phaser.Scene {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 let user = userCredential.user;
-                this.scene.start("Homescene", {
+                this.scene.start("Opcion", {
                     demo: info['demo'],
                     nivel: info['nivel'],
                     id: info['id'],
@@ -165,7 +200,7 @@ class Home extends Phaser.Scene {
                     console.log(result.user);
                     this.consultarUsuario(db, user.email).then((info) => {
                         if (info['id']) {
-                            this.scene.start("Homescene", {
+                            this.scene.start("Opcion", {
                                 demo: info['demo'],
                                 nivel: info['nivel'],
                                 id: info['id'],
@@ -202,7 +237,7 @@ class Home extends Phaser.Scene {
                 console.log(user);
                 this.consultarUsuario(db, user.email).then((info) => {
                     if (info['id']) {
-                        this.scene.start("Homescene", {
+                        this.scene.start("Opcion", {
                             demo: info['demo'],
                             nivel: info['nivel'],
                             id: info['id'],

@@ -9,9 +9,9 @@ class Resultado extends Phaser.Scene {
     init(data){
         this.accion = data.respuesta;
         this.score = data.score ?? 0;
-        this.right = data.right ?? 0;
         this.imagen = data.imagen ?? '';
         this.id = data.id;
+        this.puntos = data.puntos;
     }
   
     preload(){
@@ -29,33 +29,63 @@ class Resultado extends Phaser.Scene {
     }
   
     async create(){
-        this.background = this.add.image(270, 500, 'bgResultado');
-        this.background.setScale(1, 1.25);
-      //  this.background.setScale(1, this.game.scale.height * 0.0014);
-        this.tablero = this.add.image(270, 490, 'tablero');
+        this.background = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.2, 'bgResultado');
+        this.background.setScale(window.innerWidth * 0.0023, window.innerHeight * 0.002);
+        this.tablero = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.45, 'tablero');
+        this.tablero.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        this.tablero.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.scene.pause();
-        this.actualizarNivel();
+        if (this.id) {
+            this.actualizarNivel();
+        }
         this.scene.resume('Resultado');
         if (this.accion) {
-            this.ganaste = this.add.image(270, 435, 'ganaste');
-            let totalPuntos = await this.mostrarPuntos();
-            this.mensaje = this.add.text(150, 468, "Total puntos "+totalPuntos, { fontFamily: 'Arial Black', fontSize: '28px', fontStyle: 'normal', color: '#B70E0C' }).setDepth(1);
-            this.imagen = this.add.image(270, 650, 'imagen');
-            this.btnScore = this.add.sprite(270, 850, 'btnScore').setInteractive();
+            this.ganaste = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.37, 'ganaste');
+            this.ganaste.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.ganaste.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            let totalPuntos = this.puntos;
+            if (this.id) {
+                totalPuntos = await this.mostrarPuntos();
+            }
+            this.mensaje = this.add.text(this.cameras.main.width * 0.3, window.innerHeight * 0.45, "Total puntos "+totalPuntos, { fontFamily: 'sans-serif', fontSize: '28px', fontStyle: 'normal', color: '#B70E0C' }).setDepth(1);
+            this.mensaje.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+            this.mensaje.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.imagen = this.add.image(this.cameras.main.width * 0.5, window.innerHeight * 0.65, 'imagen');
+            this.imagen.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0011);
+            this.imagen.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            if (this.id) {
+                this.btnScore = this.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.93, 'btnScore').setInteractive();
+            } else {
+                this.btnScore = this.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.93, 'btnReintentar').setInteractive();
+            }
+            this.btnScore.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.btnScore.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
             this.btnScore.on('pointerover', () => {
                 // this.btnScore.setFrame(1);
             }).on('pointerout', () => {
                 // this.btnScore.setFrame(0);
             }).on('pointerdown', () => {
                 this.imagen.destroy();
-                this.scene.start("Score");
+                if (this.id) {
+                    this.scene.start("Score");
+                } else {
+                    this.scene.start("Homescene");
+                }
             });
         } else {
             this.tablero.setTexture('tablero1', 0);
-            this.perdiste = this.add.image(270, 390, 'perdiste');
-            this.noTeRindas = this.add.image(270, 460, 'noTeRindas');
-            this.imagen = this.add.image(270, 650, 'imagen');
-            this.btnReintentar = this.add.sprite(270, 880, 'btnReintentar').setInteractive();
+            this.perdiste = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.315, 'perdiste');
+            this.perdiste.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+            this.perdiste.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.noTeRindas = this.add.image(this.cameras.main.width * 0.5, window.innerHeight * 0.43, 'noTeRindas');
+            this.noTeRindas.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+            this.noTeRindas.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.imagen = this.add.image(this.cameras.main.width * 0.5, window.innerHeight * 0.67, 'imagen');
+            this.imagen.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.imagen.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            this.btnReintentar = this.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.93, 'btnReintentar').setInteractive();
+            this.btnReintentar.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+            this.btnReintentar.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
             this.btnReintentar.on('pointerover', () => {
                 // this.btnReintentar.setFrame(1);
             }).on('pointerout', () => {

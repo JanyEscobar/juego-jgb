@@ -21,6 +21,15 @@ export default {
          "loSabias": "Tarrito Rojo contiene 3 minerales \nimportantes para el desarrollo físico y \nmental. Tarrito Rojo aporta los beneficios \ndel Calcio, Hierro y Fósforo."
       },
       {
+         "pregunta":"¿Cuál es la porción diaria sugerida de \nTarrito Rojo?",
+         "respuesta":{
+            "uno":"1 cucharada\n(10g)",
+            "dos":"2 cucharadas\n(20g)"
+         },
+         "correcta":1,
+         "loSabias": "Tomar 1 cucharada diaria de Tarrito \nRojo contribuye a complementar los \nrequerimientos diarios de vitaminas \ny minerales."
+      },
+      {
          "pregunta":"¿Verdadero o Falso? El Complejo B \nayuda a disminuir el cansancio y la \nfatiga",
          "respuesta":{
             "uno":"Verdadero",
@@ -38,15 +47,6 @@ export default {
          },
          "correcta":2,
          "loSabias": "El Complejo B es el conjunto de vitaminas \nB que contribuyen a obtener la energía \na partir de los alimentos."
-      },
-      {
-        "pregunta":"¿Cuál es la porción diaria sugerida de \nTarrito Rojo?",
-        "respuesta":{
-           "uno":"1 cucharada(10g)",
-           "dos":"2 cucharadas(20g)"
-        },
-        "correcta":1,
-        "loSabias": "Tomar 1 cucharada diaria de Tarrito \nRojo contribuye a complementar los \nrequerimientos diarios de vitaminas \ny minerales."
       }
    ]
   }

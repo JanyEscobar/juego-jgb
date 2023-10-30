@@ -6,19 +6,19 @@ import Resultado from './scenes/Resultado.js';
 import Demo from './scenes/Demo.js';
 import Game from './scenes/game.js';
 import Score from './scenes/Score.js';
+import Opcion from './scenes/Opcion.js';
 
 const config = {
   title: 'Juego-JGB',
   url: 'http://k2digital.io',
   version: '0.0.1',
 
-  pixelArt: true,
+  antialias: true,
+  pixelArt: false,
 
   type: Phaser.AUTO,
-  width: 540,
-  height: 980,
-  // width: 540,
-  // height: 1100,
+  width: window.innerWidth,
+  height: window.innerHeight,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH
@@ -58,7 +58,8 @@ const config = {
     touch: true,
   },
 
-  scene: [Home, Registro, Demo, Homescene, Resultado, Game, Score]
+  // scene: [Demo]
+  scene: [Home, Registro, Demo, Homescene, Resultado, Game, Score, Opcion]
 };
 
 const game = new Phaser.Game(config);
