@@ -7,6 +7,14 @@ import Demo from './scenes/Demo.js';
 import Game from './scenes/game.js';
 import Score from './scenes/Score.js';
 import Opcion from './scenes/Opcion.js';
+import Login from './scenes/Login.js';
+
+window.esPC = window.matchMedia("(min-width: 768px)").matches;
+
+if (esPC) {
+  window.innerWidth = 300;
+  window.innerHeight = 600;
+}
 
 const config = {
   title: 'Juego-JGB',
@@ -15,16 +23,25 @@ const config = {
 
   antialias: true,
   pixelArt: false,
+  roundPixels: true,
+  resolution: 2,
 
   type: Phaser.AUTO,
   width: window.innerWidth,
   height: window.innerHeight,
   scale: {
     mode: Phaser.Scale.FIT,
+    // mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
   parent: 'container',
   backgroundColor: '#FFFFFF',
+
+  render: {
+    pixelArt: false,
+    antialias: true,
+    roundPixels: true,
+},
 
   banner: {
     hidePhaser: true,
@@ -59,7 +76,7 @@ const config = {
   },
 
   // scene: [Demo]
-  scene: [Home, Registro, Demo, Homescene, Resultado, Game, Score, Opcion]
+  scene: [Home, Registro, Demo, Homescene, Resultado, Game, Score, Opcion, Login]
 };
 
 const game = new Phaser.Game(config);

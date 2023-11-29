@@ -30,8 +30,8 @@ class Opcion extends Phaser.Scene {
         this.seleccion.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
         this.seleccion.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         // this.powered = this.add.image(this.cameras.main.width / 2, this.cameras.main.height - 15, 'powered');
-        this.powered = this.add.image(this.cameras.main.width / 2, window.innerHeight - 17, 'powered');
-        this.powered.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+        this.powered = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.975, 'powered');
+        this.powered.setScale(window.innerWidth * 0.003, window.innerHeight * 0.0015);
         this.powered.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
          
         this.btnEdicativo = this.add.sprite(this.cameras.main.width / 2, window.innerHeight * 0.5, 'btnEdicativo').setDepth(1).setInteractive();

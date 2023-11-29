@@ -24,7 +24,7 @@ export class Vidas {
     }
 
     crearVidas(cantidad) {
-        let displacement = 50;
+        let displacement = window.innerWidth * 0.13;
         let firstPosition = (this.relatedScene.cameras.main.width) - (cantidad * displacement);
         this.vidasActuales = this.relatedScene.physics.add.staticGroup({
             setScale: { x: 0.5, y: 0.5 },
@@ -51,10 +51,10 @@ export class Vidas {
         // Asigna texto a cada elemento del grupo
         this.vidasActuales.getChildren().forEach(function(element, index) {
             if (element.active) {
-                element.setScale(window.innerWidth * 0.001, window.innerHeight * 0.0006);
+                element.setScale(window.innerWidth * 0.001, window.innerHeight * 0.0005);
                 element.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
-                element.texto = this.add.text(element.x - 9, element.y - 9, `B${cantidadVidas}`, { fontFamily: 'Arial', fontSize: '16px', color: "#FFFFFF", fontStyle: 'normal' })
-                    .setDepth(10).setScale(element.x * 0.003, element.y * 0.04);
+                element.texto = this.add.text(element.x * 0.974, element.y * 0.55, `B${cantidadVidas}`, { fontFamily: 'Arial', fontSize: '12px', color: "#FFFFFF", fontStyle: 'normal' })
+                    .setDepth(10).setScale(element.x * 0.003, element.y * 0.055);
                 cantidadVidas--;
             }
         }, this.relatedScene);

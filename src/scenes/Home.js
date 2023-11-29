@@ -19,17 +19,17 @@ class Home extends Phaser.Scene {
         this.load.image('bghome', 'assets/home1.png');
         this.load.image('logo', 'assets/logo_TR.png');
         this.load.image('bienvenida', 'assets/bienvenidos.png');
-        this.load.image('iniciarSesion', 'assets/iniciar_sesion.png');
-        this.load.image('btnOmitir', 'assets/btnOmitir.png');
-        this.load.image('google', 'assets/btnGoogle.png');
-        this.load.image('outlook', 'assets/btnOutlook.png');
-        this.load.image('btnRegistrarse', 'assets/btnRegistrar.png');
+        // this.load.image('iniciarSesion', 'assets/iniciar_sesion.png');
+        this.load.image('btnOmitir', 'assets/btnSinRegistro.png');
+        // this.load.image('google', 'assets/btnGoogle.png');
+        // this.load.image('outlook', 'assets/btnOutlook.png');
+        // this.load.image('btnRegistrarse', 'assets/btnRegistrar.png');
         this.load.image('powered', 'assets/powered.png');
         // this.load.on('progress', function (value) {
         //     console.log('Cargando');
         // });
 
-        this.load.spritesheet('btnEntrar', 'assets/btnEntrada.png', { frameWidth: 364, frameHeight: 94 });
+        this.load.image('btnEntrar', 'assets/btnEntrarHome.png');
     }
   
     create(){
@@ -51,53 +51,60 @@ class Home extends Phaser.Scene {
         this.background = this.add.image(window.innerWidth * 0.5, window.innerHeight * 0.2, 'bghome');
         this.background.setScale(window.innerWidth * 0.0023, window.innerHeight * 0.002);
         this.background.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
-        this.logo = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.15, 'logo');
-        this.logo.setScale(1, 1);
+        this.logo = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.2, 'logo');
+        this.logo.setScale(1.5, 1.5);
         this.logo.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
-        this.bienvenida = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.27, 'bienvenida');
+        this.bienvenida = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.4, 'bienvenida');
         this.bienvenida.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
         this.bienvenida.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
-        this.iniciarSesion = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.32, 'iniciarSesion');
-        this.iniciarSesion.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
-        this.iniciarSesion.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.tienesCuenta = this.add.text(window.innerWidth / 4.5, window.innerHeight * 0.5, "¿Ya tienes una cuenta?", { fontFamily: 'sans-serif', fontSize: '18px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
+        this.tienesCuenta.setScale(window.innerWidth * 0.003, window.innerHeight * 0.002);
+        this.tienesCuenta.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        this.o = this.add.text(window.innerWidth / 2, window.innerHeight * 0.68, "Ó", { fontFamily: 'sans-serif', fontSize: '18px', fontStyle: 'normal', color: '#FFFFFF' }).setDepth(1);
+        this.o.setScale(window.innerWidth * 0.003, window.innerHeight * 0.002);
+        this.o.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        // this.iniciarSesion = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.32, 'iniciarSesion');
+        // this.iniciarSesion.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+        // this.iniciarSesion.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         // this.powered = this.add.image(this.cameras.main.width / 2, this.cameras.main.height - 15, 'powered');
-        this.powered = this.add.image(this.cameras.main.width / 2, window.innerHeight - 17, 'powered');
-        this.powered.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+        // this.powered = this.add.image(this.cameras.main.width / 2, window.innerHeight - 25, 'powered');
+        this.powered = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.975, 'powered');
+        this.powered.setScale(window.innerWidth * 0.003, window.innerHeight * 0.0015);
         this.powered.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
-        let inputEmail = this.add.rexInputText(this.cameras.main.width * 0.46, window.innerHeight * 0.38, 300, 52, {
-            backgroundColor: '#FFFFFF',
-            color: '#000000',
-            fontFamily: 'Arial',
-            fontSize: '24px',
-            placeholder: 'Usuario',
-            id: 'inputEmail',
-            autoComplete: true,
-        });
-        inputEmail.setScale(window.innerWidth * 0.002, window.innerHeight * 0.0012);
-        let inputClave = this.add.rexInputText(this.cameras.main.width * 0.46, window.innerHeight * 0.46, 300, 52, {
-            backgroundColor: '#FFFFFF',
-            color: '#000000',
-            fontFamily: 'Arial',
-            fontSize: '24px',
-            placeholder: 'Clave',
-            type: 'password',
-            id: 'inputClave',
-            autoComplete: true,
-        });
-        inputClave.setScale(window.innerWidth * 0.002, window.innerHeight * 0.0012);
+        // let inputEmail = this.add.rexInputText(this.cameras.main.width * 0.46, window.innerHeight * 0.38, 300, 52, {
+        //     backgroundColor: '#FFFFFF',
+        //     color: '#000000',
+        //     fontFamily: 'Arial',
+        //     fontSize: '24px',
+        //     placeholder: 'Usuario',
+        //     id: 'inputEmail',
+        //     autoComplete: true,
+        // });
+        // inputEmail.setScale(window.innerWidth * 0.002, window.innerHeight * 0.0012);
+        // let inputClave = this.add.rexInputText(this.cameras.main.width * 0.46, window.innerHeight * 0.46, 300, 52, {
+        //     backgroundColor: '#FFFFFF',
+        //     color: '#000000',
+        //     fontFamily: 'Arial',
+        //     fontSize: '24px',
+        //     placeholder: 'Clave',
+        //     type: 'password',
+        //     id: 'inputClave',
+        //     autoComplete: true,
+        // });
+        // inputClave.setScale(window.innerWidth * 0.002, window.innerHeight * 0.0012);
          
         this.btnEntrar = this.add.sprite(this.cameras.main.width * 0.52, window.innerHeight * 0.6, 'btnEntrar').setDepth(1).setInteractive();
         this.btnEntrar.setScale(window.innerWidth * 0.002, window.innerHeight * 0.0012);
         this.btnEntrar.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
-        this.btnRegistrarse = this.add.image(this.cameras.main.width * 0.68, window.innerHeight * 0.7, 'btnRegistrarse').setDepth(1).setInteractive();
-        this.btnRegistrarse.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
-        this.btnRegistrarse.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
-        this.btnGoogle = this.add.image(this.cameras.main.width * 0.3, window.innerHeight * 0.7, 'google').setInteractive();
-        this.btnGoogle.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
-        this.btnGoogle.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
-        this.btnOutlook = this.add.image(this.cameras.main.width * 0.45, window.innerHeight * 0.7, 'outlook').setInteractive();
-        this.btnOutlook.setScale(window.innerWidth * 0.0019, window.innerHeight * 0.0012);
-        this.btnOutlook.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        // this.btnRegistrarse = this.add.image(this.cameras.main.width * 0.68, window.innerHeight * 0.7, 'btnRegistrarse').setDepth(1).setInteractive();
+        // this.btnRegistrarse.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        // this.btnRegistrarse.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        // this.btnGoogle = this.add.image(this.cameras.main.width * 0.3, window.innerHeight * 0.7, 'google').setInteractive();
+        // this.btnGoogle.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
+        // this.btnGoogle.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        // this.btnOutlook = this.add.image(this.cameras.main.width * 0.45, window.innerHeight * 0.7, 'outlook').setInteractive();
+        // this.btnOutlook.setScale(window.innerWidth * 0.0019, window.innerHeight * 0.0012);
+        // this.btnOutlook.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.btnOmitir = this.add.image(this.cameras.main.width * 0.52, window.innerHeight * 0.8, 'btnOmitir').setInteractive();
         this.btnOmitir.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
         this.btnOmitir.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
@@ -110,38 +117,25 @@ class Home extends Phaser.Scene {
             });
         });
 
-        this.btnGoogle.on('pointerdown', () => {
-            this.loginGoogle(auth, provider, db); 
-        });
+        // this.btnGoogle.on('pointerdown', () => {
+        //     this.loginGoogle(auth, provider, db); 
+        // });
         
-        this.btnOutlook.on('pointerdown', () => {
-            this.loginOutlook(auth, providerOutlook, db)
-        });
+        // this.btnOutlook.on('pointerdown', () => {
+        //     this.loginOutlook(auth, providerOutlook, db)
+        // });
         
         this.btnEntrar.on('pointerover', () => {
             // this.btnEntrar.setFrame(1);
         }).on('pointerout', () => {
             // this.btnEntrar.setFrame(0);
         }).on('pointerdown', () => {   
-            let email = $('#inputEmail').val();
-            let clave = $('#inputClave').val();
-            if (email && clave) {
-                this.loginTraducuinal(auth, email, clave, db);
-            } else {
-                let textoValidacion = '';
-                if (!email) {
-                    textoValidacion = textoValidacion + 'Por favor ingrese su usuario.\n';
-                }
-                if (!clave) {
-                    textoValidacion = textoValidacion + 'Por favor ingrese su contraseña.';
-                }
-                alert(textoValidacion);
-            }
+            this.scene.start("Login");
         });
         
-        this.btnRegistrarse.on('pointerdown', () => {      
-            this.scene.start("Registro");
-        });
+        // this.btnRegistrarse.on('pointerdown', () => {      
+        //     this.scene.start("Registro");
+        // });
     }
 
     async loginGoogle(auth, provider, db) {

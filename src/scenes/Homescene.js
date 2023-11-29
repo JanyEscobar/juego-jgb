@@ -42,6 +42,7 @@ class Homescene extends Phaser.Scene {
     this.comenzarBtn.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
     this.comenzarBtn.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
     this.nombres = this.add.image(this.cameras.main.width / 2, window.innerHeight * 0.7, "nombres");
+    this.nombres.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
     this.nombres.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
 
     let personaje = 0;

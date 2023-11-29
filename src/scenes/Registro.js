@@ -47,7 +47,7 @@ class Registro extends Phaser.Scene {
         this.btnAtras.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0012);
         // this.powered = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height - 15, 'powered');
         this.powered = this.add.sprite(this.cameras.main.width / 2, window.innerHeight - 17, 'powered');
-        this.powered.setScale(window.innerWidth * 0.0018, window.innerHeight * 0.0015);
+        this.powered.setScale(window.innerWidth * 0.003, window.innerHeight * 0.0015);
         let inputNombre = this.add.rexInputText(this.cameras.main.width * 0.45, window.innerHeight * 0.3, 300, 52, {
             backgroundColor: '#FFFFFF',
             color: '#000000',
